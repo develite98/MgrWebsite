@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
-  domainUrl: 'https://luffy.uat.4ps.dev',
-  stageDomainUrl: 'https://luffy.uat.4ps.dev/',
+  production: false,
+  domainUrl: 'https://dev.mixcore.org',
+  stageDomainUrl: 'https://dev.mixcore.org',
 };
