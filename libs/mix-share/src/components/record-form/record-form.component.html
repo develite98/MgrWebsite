@@ -1,0 +1,45 @@
+<div class="mix-dialog --default-padding">
+  @if (loadingState() === 'Loading') {
+  <div class="p-4">
+    <default-skeleton></default-skeleton>
+  </div>
+  } @else {
+  <div class="mix-dialog__header">
+    {{ mode === 'create' ? 'Create' : 'Update' }} record from
+    {{ ref.data.mixDatabase.displayName }}
+  </div>
+
+  <div class="mix-dialog__content">
+    <form [formGroup]="form">
+      <formly-form *ngIf="fields.length"
+                   [fields]="fields"
+                   [form]="form"
+                   [model]="modelData"></formly-form>
+    </form>
+  </div>
+
+  <div class="mix-dialog__footer">
+    <mix-button class="mr-auto"
+                type="outline"
+                (click)="ref.close()"
+                size="m">
+      Cancel
+    </mix-button>
+
+    <div *ngIf="mode === 'create'"
+         class="mr-2">
+      <mix-checkbox [formControl]="continueCreate"
+                    label="Continues to create"></mix-checkbox>
+    </div>
+
+
+    <mix-button [loading]="(loadingState$ | async) === 'Loading'"
+                (click)="onSaveData()"
+                size="m">
+      {{ mode === 'create' ? 'Create' : 'Save' }}
+    </mix-button>
+  </div>
+  }
+
+
+</div>

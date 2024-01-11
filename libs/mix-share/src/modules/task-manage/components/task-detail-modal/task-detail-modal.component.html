@@ -1,0 +1,104 @@
+@if (loadingState() === 'Success') {
+<div class="task-detail"
+     [formGroup]="taskForm">
+  <!-- Title -->
+  <div class="task-detail__title"
+       [style.--color]="TaskStatusColors[task.taskStatus]">
+    <div class="flex align-item-center gap-1">
+      <img [src]="TaskTypeIconDisplay[task.type]">
+      <span>{{ task.type }}-{{ task.id }}</span>
+    </div>
+
+    <mix-inline-input formControlName="title"></mix-inline-input>
+
+    <div class="w-full mt-1 mb-1 flex items-end">
+      <!-- Reporter -->
+      <div class="flex gap-2 items-center">
+        <div class="mt-2 mb-1 text-500 text-s text-sub">Reporter</div>
+        <mix-user-select class="item"
+                         [size]="'s'"
+                         formControlName="reporter"></mix-user-select>
+      </div>
+
+      <mix-button class="ml-auto"
+                  [disabled]="disableSave()"
+                  [loading]="(loadingState$ | async) === 'Loading'"
+                  (click)="saveTask()"><span class="mix-icon">save</span> Save & Close</mix-button>
+    </div>
+  </div>
+
+  <div class="task-detail__main-core">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-3">
+        <!-- Status -->
+        <div class="flex gap-2 items-center">
+          <div class="text-s text-sub label">Status:</div>
+          <mix-select class="item"
+                      [items]="statusItems"
+                      [labelProcess]="statusLabel"
+                      [size]="'s'"
+                      formControlName="taskStatus"></mix-select>
+        </div>
+
+        <!-- Priority -->
+        <div class="flex gap-2 items-center mt-2">
+          <div class="text-s text-sub label">Priority:</div>
+          <task-priority-select class="item"
+                                [size]="'s'"
+                                formControlName="taskPriority"></task-priority-select>
+        </div>
+      </div>
+
+      <div class="col-span-3">
+        <!-- Story point -->
+        <div class="flex gap-2 items-center">
+          <div class="text-s text-sub label">Effort:</div>
+          <story-point-select class="item"
+                              [size]="'s'"
+                              formControlName="taskPoint"></story-point-select>
+        </div>
+      </div>
+
+      <div class="col-start-11 col-span-2">
+        <div class="text-xs text-sub">
+          <div>
+            Updated at
+            {{
+              task.lastModified || task.createdDateTime
+                | mixDate
+                | date : 'dd/MM/yyyy hh:mm' || '--'
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-detail__body">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-8">
+        <div class="mb-1 text-500 text-s text-sub label">Description</div>
+        <mix-rich-text-editor class="description"
+                              [placeHolder]="'Make your description even better.'"
+                              formControlName="description"></mix-rich-text-editor>
+
+        <div class="mt-4 mb-2 text-500 text-s text-sub label">
+          Discussion(s)
+        </div>
+      </div>
+
+      <div class="col-span-4">
+        <div class="mb-1 text-500 text-s text-sub label">Add to task</div>
+        <div class="flex flex-wrap gap-2">
+          <start-end-date [task]="task"
+                          (taskDateChange)="onDateChange($event)"></start-end-date>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="task-detail__loading">
+  <mix-skeleton-loading [type]="'form'"></mix-skeleton-loading>
+</div>
+}

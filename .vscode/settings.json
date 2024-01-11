@@ -1,0 +1,44 @@
+{
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.fontLigatures": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.encoding": "utf8",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    "**/.git": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "files.watcherExclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/lib": true,
+    "**/temp": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/lib": true,
+    "**/dist": true
+  },
+  "typescript.preferences.quoteStyle": "single",
+  "workbench.iconTheme": "vscode-icons",
+  "material-icon-theme.activeIconPack": "angular_ngrx",
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.component.html$",
+        "cmd": "node ./tools/format-html-template.js --staged=true ${file}"
+      }
+    ]
+  }
+}

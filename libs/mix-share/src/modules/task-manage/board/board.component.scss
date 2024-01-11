@@ -1,0 +1,26 @@
+.board {
+  --task-min-col-w: 250px;
+  --task-col-w: 320px;
+  --task-list-bg: rgba(244, 244, 244, 1);
+  --task-col-padding: 8px 16px;
+  --task-col-collapse-w: 50px;
+
+  &__main-view {
+    max-width: calc(100% - 28px);
+    width: fit-content;
+    height: 100%;
+    margin: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  &__filter {
+    padding: 16px 16px 0px 16px;
+    display: flex;
+
+    mix-input {
+      width: 300px;
+    }
+  }
+}

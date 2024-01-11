@@ -1,0 +1,41 @@
+<div class="button-link"
+     [tp]="dateSelect"
+     [tpClassName]="'task-start-end-date'"
+     [tpIsLazy]="true"
+     [tpOffset]="[-10, 5]"
+     tpVariation="popper"
+     tpPlacement="bottom-start">
+  <span class="mix-icon">alarm</span>
+  <span>Date</span>
+</div>
+
+<ng-template #dateSelect
+             let-hide>
+  <div>
+    <div class="flex gap-1">
+      <tui-calendar [(hoveredItem)]="hoveredItem"
+                    [maxViewedMonth]="firstMonth"
+                    [month]="firstMonth"
+                    [showAdjacent]="false"
+                    [value]="value"
+                    (dayClick)="onDayClick($event)"
+                    (monthChange)="onMonthChangeFirst($event)"></tui-calendar>
+
+      <tui-calendar [(hoveredItem)]="hoveredItem"
+                    [minViewedMonth]="lastMonth"
+                    [month]="lastMonth"
+                    [showAdjacent]="false"
+                    [value]="value"
+                    (dayClick)="onDayClick($event)"
+                    (monthChange)="onMonthChangeLast($event)"></tui-calendar>
+    </div>
+
+    <div class="w-full flex gap-1 ps-2 pe-2 mt-3">
+      <mix-button class="w-full"
+                  type="outline"
+                  (click)="hide()">Cancel</mix-button>
+      <mix-button class="w-full"
+                  (click)="onSave(); hide()">Save</mix-button>
+    </div>
+  </div>
+</ng-template>

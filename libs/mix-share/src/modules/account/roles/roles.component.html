@@ -1,0 +1,79 @@
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Home"
+         icon="home"
+         url="/"
+         mixBreadcrumbItem></div>
+
+    <div name="Roles"
+         mixBreadcrumbItem></div>
+  </mix-breadcrumbs>
+</ng-template>
+
+
+<div class="data-table-page">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar *ngIf="store.state() as state"
+                     [description]="'LISTING'"
+                     [title]="'All Roles'">
+      <div class="toolbar-separator"></div>
+      <mix-button (click)="onCreate(createRoleForm)"
+                  size="s"><span class="material-symbols-outlined"> add </span> Add
+        Role</mix-button>
+      <div class="toolbar-separator"></div>
+    </mix-sub-toolbar>
+
+    <div *ngIf="store.vm$ | async as state"
+         class="data-table-page__body">
+      <mix-data-table [contextMenus]="contextMenus"
+                      [dataset]="state.data"
+                      [loading]="state.status === 'Loading'"
+                      [pageInfo]="state.pageInfo"
+                      [searchFieldOptions]="store.searchColumns"
+                      [selectedItem]="selectedRole"
+                      (pageChange)="store.changePage($event)"
+                      (searchChange)="store.search($event.searchText, $event.searchField)">
+        <div [columnType]="'CHECKBOX'"
+             mixTableColumn></div>
+
+        <div [header]="'Role'"
+             [minWidth]="'150px'"
+             key="name"
+             mixTableColumn></div>
+
+        <div *ngIf="!showDetail"
+             [header]="'Normalized'"
+             [minWidth]="'150px'"
+             key="normalizedName"
+             mixTableColumn></div>
+      </mix-data-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #createRoleForm
+             let-hide>
+  <div class="mix-dialog --default-padding">
+    <div class="mix-dialog__header">
+      <span>Create new Roles</span>
+    </div>
+
+    <div class="mix-dialog__content">
+      <mix-input [formControl]="roleName"
+                 [mixAutoFocus]="true"
+                 (keyup.enter)="createRoles()"
+                 placeHolder="Type your role name"></mix-input>
+    </div>
+
+    <div class="mix-dialog__footer">
+      <mix-button class="mr-auto"
+                  type="outline"
+                  [disabled]="loadingState() === 'Loading'"
+                  dialogClose>Cancel</mix-button>
+
+      <mix-button [disabled]="loadingState() === 'Loading'"
+                  [loading]="loadingState() === 'Loading'"
+                  (click)="createRoles()">Create</mix-button>
+    </div>
+  </div>
+</ng-template>

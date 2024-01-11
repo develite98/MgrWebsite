@@ -1,0 +1,32 @@
+<div *ngIf="loadingState() as loading"
+     class="data-table-page board">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar [description]="'Work on'"
+                     [title]="'Kanban Board'">
+      <mix-button (click)="addTask()"
+                  size="s"><span class="material-symbols-outlined"> add </span>
+        {{ 'New' | transloco }}</mix-button>
+    </mix-sub-toolbar>
+
+    <mix-task-filter></mix-task-filter>
+
+    <div *ngIf="store.state$$() as vm"
+         class="board__main-view">
+      <!-- Header -->
+      <mix-task-header></mix-task-header>
+      <!-- Loading View -->
+      @if (vm.status === 'Loading') {
+      <mix-skeleton-loading [type]="'inline'"></mix-skeleton-loading>
+      } @else {
+      <!-- Main View -->
+      @if (store.getParentTasks() | async; as tasks) {
+      <!-- Loop task -->
+      @for (task of tasks; track task.id) {
+      <mix-task-group-list [parentTask]="task"
+                           [taskStatuses]="taskStatuses"
+                           cdkDropListGroup>
+      </mix-task-group-list>
+      } } }
+    </div>
+  </div>
+</div>

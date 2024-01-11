@@ -1,0 +1,15 @@
+.project-select {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.popup-container {
+  max-height: 500px;
+  overflow: auto;
+}

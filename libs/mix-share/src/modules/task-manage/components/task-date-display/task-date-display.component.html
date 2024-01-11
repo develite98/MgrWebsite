@@ -1,0 +1,9 @@
+<div class="task-date-display">
+  <span class="mix-icon me-1">schedule</span>
+  <span>
+    {{ task.fromDate | date : 'dd MMM yyyy' }}
+  </span>
+  <span *ngIf="task.dueDate">
+    - {{ task.dueDate | date : 'dd MMM yyyy' }}
+  </span>
+</div>

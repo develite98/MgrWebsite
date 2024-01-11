@@ -1,0 +1,39 @@
+<div class="main-toolbar">
+  <div *ngIf="showExpandBtn"
+       class="main-toolbar__expand-btn">
+    <collapse-btn (click)="expandChange.emit()"></collapse-btn>
+  </div>
+
+  <mix-location-controller class="hidden md:block"></mix-location-controller>
+
+  <div *ngIf="toolbarService.templatePortal$ | async as portal"
+       class="main-toolbar__custom-portal">
+    <ng-template [cdkPortalOutlet]="portal"></ng-template>
+  </div>
+
+  <ng-container *ngIf="auth.cultures$ | async as cultures">
+    <div *ngIf="cultures?.length"
+         class="main-toolbar__culture ml-auto">
+      <mix-button type="flat"
+                  [iconBtn]="true"
+                  [size]="'s'"
+                  [tp]="cultureTpl"
+                  tpPlacement="bottom-end"
+                  tpVariation="popper">
+        <span class="flag-icon {{ auth.currentCulture?.icon }}"
+              style="width: 16px; height: 10px"></span>
+      </mix-button>
+
+      <ng-template #cultureTpl
+                   let-hide>
+        <div *ngFor="let culture of cultures"
+             class="mix-menu-item"
+             (click)="hide(); changeCulture(culture)">
+          <span class="main-toolbar__culture-icon flag-icon {{ culture.icon }}"></span>{{ culture.displayName }}
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <mix-user-navigation class="ms-2 me-2"></mix-user-navigation>
+</div>

@@ -1,0 +1,25 @@
+<div class="w-screen h-screen main-layout"
+     [class.--collapse]="!expand()">
+  <div class="main-layout__progress"
+       [ngClass]="{'hidden': !showProgress()}">
+    <progress class="progress"
+              tuiProgressBar
+              size="s"
+              max="100"
+              style="height: 3px"></progress>
+  </div>
+
+  <aside id="sidebar">
+    <mix-main-side-menu [showDetail]="expand()"
+                        (expandChange)="onExpandChange()"></mix-main-side-menu>
+  </aside>
+
+  <main class="shadow flex flex-col h-full overflow-auto rounded-none md:rounded-tl-xl md:rounded-bl-xl"
+        id="canvas">
+    <mix-main-toolbar [showExpandBtn]="!expand()"
+                      (expandChange)="onExpandChange()"></mix-main-toolbar>
+    <div class="grow overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,13 @@
+<div class="task-header">
+  <div
+    class="title text-500 text-truncate"
+    *ngFor="let status of taskStatuses"
+    [style.--color]="TaskStatusColors[status]"
+  >
+    {{ TaskStatusDisplay[status] }}
+  </div>
+
+  <div class="add-btn">
+    <mix-icon-button name="add"></mix-icon-button>
+  </div>
+</div>

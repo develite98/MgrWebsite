@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+tui-editor {
+  height: 100%;
+  width: 100%;
+}
+
+.rich-text-editor {
+  height: 100%;
+  position: relative;
+
+  &.--full-width {
+    position: fixed;
+    width: 50vw;
+    height: calc(100vh - 8px);
+    top: 4px;
+    right: 4px;
+    z-index: 50;
+    animation: fullwidth-open 0.1s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &__button {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    background-color: #fff;
+  }
+}
+
+.rich-text-editor-preview {
+  cursor: pointer;
+  padding: 0px;
+  max-height: 350px;
+  min-height: 100px;
+  overflow: auto;
+
+  &:hover {
+    background-color: var(--ds-background-neutral-hovered);
+    border: 1px solid var(--ds-background-neutral-hovered);
+  }
+}
+
+@keyframes fullwidth-open {
+  0% {
+    opacity: 0.2;
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

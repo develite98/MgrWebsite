@@ -1,0 +1,51 @@
+.main-layout {
+  position: relative;
+  --sidebar-reserved-width: 320px;
+  grid-template-columns: var(--sidebar-reserved-width) 1fr;
+  grid-template-areas: 'sidebar canvas';
+  display: grid;
+  transition: all 0.3s;
+
+  &__progress {
+    top: 0;
+    width: 100%;
+    position: absolute;
+    z-index: 4;
+  }
+
+  &.--collapse {
+    --sidebar-reserved-width: 64px;
+  }
+
+  #sidebar {
+    contain: strict;
+    background-color: #eaf0f3;
+  }
+
+  .shadow {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px,
+      rgba(0, 0, 0, 0.06) -4px 4px 8px 0px;
+  }
+}
+
+@media only screen and (max-width: 890px) {
+  .main-layout {
+    display: flex;
+    --sidebar-reserved-width: 100vw;
+
+    &.--collapse {
+      --sidebar-reserved-width: 0px;
+    }
+
+    #sidebar {
+      width: var(--sidebar-reserved-width);
+      contain: strict;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: 5;
+      height: 100%;
+      transition: all 0.3s;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tippy-variation-popper {
+  .tippy-content {
+    padding: 5px 0px !important;
+    background-color: #eaf0f3e6;
+
+    .popup-container {
+      max-height: 50vh;
+      min-width: 300px;
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+    }
+  }
+}
+
+.tippy-arrow {
+  display: none;
+}
+
+.tippy-box {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1), 0 14px 28px rgba(0, 0, 0, 0.14) !important;
+}
+
+.tippy-variation-tooltip.compress-image-preview {
+  .tippy-box {
+    background-color: unset !important;
+    border: 1px solid var(--border-color-default);
+    border-radius: 4px;
+  }
+}
+
+.mix-menu-item {
+  @apply text-gray-900 font-medium p-2.5 px-6 text-sm flex items-center;
+  cursor: pointer;
+  gap: 6px;
+  min-width: 13.5rem;
+
+  .mix-icon {
+    @apply text-gray-600;
+  }
+
+  &:hover {
+    background-color: var(--tui-base-02);
+
+    .mix-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  }
+}
+
+.line-break {
+  width: 100%;
+  height: 0.5px;
+  display: block;
+  content: '';
+  background-color: var(--border-color-default);
+}
+
+@keyframes popover-open {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.7);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}

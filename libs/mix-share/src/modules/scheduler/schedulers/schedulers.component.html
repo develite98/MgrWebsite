@@ -1,0 +1,99 @@
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Home"
+         icon="home"
+         url="/"
+         mixBreadcrumbItem></div>
+
+    <div name="Schedulers"
+         mixBreadcrumbItem></div>
+  </mix-breadcrumbs>
+</ng-template>
+
+
+<div class="data-table-page">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar *ngIf="store.state() as state"
+                     [description]="'LISTING'"
+                     [title]="'All Jobs'">
+      <div class="toolbar-separator"></div>
+      <mix-button (click)="addJob()"
+                  size="s"><span class="material-symbols-outlined"> add </span> New
+        Jobs</mix-button>
+      <div class="toolbar-separator"></div>
+    </mix-sub-toolbar>
+
+    <div *ngIf="store.vm$ | async as state"
+         class="data-table-page__body">
+      <div class="relative overflow-x-auto sm:rounded-lg mt-5">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th class="px-6 py-3 whitespace-nowrap"
+                  scope="col">
+                Job name
+              </th>
+              <th class="px-6 py-3 whitespace-nowrap"
+                  scope="col">
+                Job Type
+              </th>
+              <th class="px-6 py-3 whitespace-nowrap"
+                  scope="col">
+                Start At
+              </th>
+              <th class="px-6 py-3 whitespace-nowrap"
+                  scope="col">
+                End At
+              </th>
+              <th class="px-6 py-3 whitespace-nowrap"
+                  scope="col">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let job of state.data"
+                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white "
+                  scope="row">
+                {{ job.name }}
+              </th>
+              <td class="px-6 py-4">
+                <span class="whitespace-nowrap">
+                  {{ job.jobName | formatJobName }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+              </td>
+              <td class="px-6 py-4">
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex gap-2">
+                  <mix-button title="Run immediately"
+                              [iconBtn]="true">
+                    <span class="mix-icon">play_arrow</span>
+                  </mix-button>
+
+                  <mix-button title="Toggle Run/Pause"
+                              [iconBtn]="true">
+                    <span class="mix-icon">play_circle</span>
+                  </mix-button>
+
+                  <mix-button [iconBtn]="true"
+                              (click)="editJob(job)">
+                    <span class="mix-icon">edit</span>
+                  </mix-button>
+
+                  <mix-button type="danger"
+                              [iconBtn]="true">
+                    <span class="mix-icon">delete</span>
+                  </mix-button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

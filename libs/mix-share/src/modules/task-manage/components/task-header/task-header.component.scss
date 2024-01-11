@@ -1,0 +1,36 @@
+.task-header {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+
+  .title {
+    --color: #fff;
+
+    padding: var(--task-col-padding);
+    min-width: var(--task-min-col-w);
+    width: var(--task-col-w);
+    background-color: var(--task-list-bg);
+    border-radius: 0.125rem;
+    display: flex;
+    gap: 8px;
+    padding-left: 4px;
+
+    &::before {
+      display: block;
+      width: 6px;
+      height: 110%;
+      content: '';
+      background-color: var(--color);
+      border-radius: 1rem;
+    }
+  }
+
+  .add-btn {
+    background-color: var(--task-list-bg);
+    border-radius: 0.125rem;
+    width: var(--task-col-collapse-w);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
