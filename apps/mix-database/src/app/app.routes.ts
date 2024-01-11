@@ -57,6 +57,10 @@ export const CMS_ROUTES = {
       path: 'events',
       fullPath: 'app/events',
     },
+    project: {
+      path: 'workspace',
+      fullPath: 'app/workspace',
+    },
     schedulers: {
       path: 'schedulers',
       fullPath: 'app/events/schedulers',

@@ -24,6 +24,11 @@ export const PortalRoutes: Routes = [
       import('@mixcore/module/scheduler').then((m) => m.SchedulerRoute),
   },
   {
+    path: CMS_ROUTES.portal.project.path,
+    loadChildren: () =>
+      import('@mixcore/module/task').then((m) => m.taskManagementRoutes),
+  },
+  {
     path: '',
     redirectTo: CMS_ROUTES.portal.dashboard.path,
     pathMatch: 'full',

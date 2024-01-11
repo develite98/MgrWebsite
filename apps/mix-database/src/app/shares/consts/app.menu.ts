@@ -86,6 +86,19 @@ export const APP_MENU: MenuItem[] = [
       },
     ],
   },
+  {
+    title: 'Workspace',
+    url: CMS_ROUTES.portal.events.fullPath,
+    iconColor: '#EC652C',
+    icon: 'work',
+    children: [
+      {
+        icon: 'view_kanban',
+        title: 'Board',
+        url: CMS_ROUTES.portal.project.fullPath + '/board',
+      },
+    ],
+  },
 ];
 
 export const APP_NOT_SUPPER_ADMIN_MENU = [
