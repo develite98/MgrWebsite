@@ -37,21 +37,16 @@
     overflow: auto;
   }
 
-  &__sidebar {
-    min-width: 255px;
-    max-width: 255px;
-  }
-
   &__action-bar {
-    width: 55px;
+    width: 3.75rem;
   }
 
   &__sub-toolbar {
     border-bottom: 1px solid var(--border-color-default);
     background-color: var(--background-color-primary);
     padding: var(--container-padding);
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   &__filter-container {
@@ -74,9 +69,6 @@
     display: flex;
     flex-direction: column;
     background-color: var(--background-color-primary);
-    // border-top-left-radius: 12px;
-    // border-bottom-left-radius: 12px;
-    // border: 1px solid var(--tui-base-04);
     overflow: hidden;
     flex-grow: 1;
     z-index: 1;

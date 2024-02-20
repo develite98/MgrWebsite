@@ -70,7 +70,6 @@ export abstract class BaseSignalService {
     try {
       await this._hubConnection.start();
       this._setupSignalREvents();
-      // await this._hubConnection.invoke('JoinRoom', this._roomName);
     } catch (err) {
       this._hubConnection.stop().then((_) => {
         this._openConnection = false;

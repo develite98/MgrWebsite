@@ -1,6 +1,6 @@
 {
-  "name": "mix-cms",
-  "short_name": "mix-cms",
+  "name": "mix-database",
+  "short_name": "mix-database",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

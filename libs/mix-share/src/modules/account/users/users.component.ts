@@ -73,6 +73,7 @@ export class UserComponent extends BasePageComponent {
     this.dialog.open(UpdateUserDialogComponent, {
       width: '80vw',
       height: '90vh',
+      windowClass: 'side-modal',
       maxWidth: 1440,
       maxHeight: 840,
       data: item,

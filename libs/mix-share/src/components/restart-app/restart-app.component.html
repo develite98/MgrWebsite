@@ -1,0 +1,22 @@
+<div class="mix-dialog --default-padding">
+  <div class="mix-dialog__header">
+    {{ dialogRef.data['title'] ?? 'Restart' }}
+  </div>
+
+  <div class="mix-dialog__content">
+    <div class="text-xl text-center mt-2">
+      You need to restart the application to let your change take effect.
+    </div>
+  </div>
+
+  <div class="mix-dialog__footer">
+    <mix-button class="mr-auto"
+                type="outline"
+                [disabled]="loadingState() === 'Loading'"
+                (click)="dialogRef.close()">Do it later</mix-button>
+    <mix-button type="primary"
+                [loading]="loadingState() === 'Loading'"
+                (click)="restart()">Restart Now
+    </mix-button>
+  </div>
+</div>

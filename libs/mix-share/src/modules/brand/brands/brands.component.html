@@ -1,0 +1,74 @@
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Back Office"
+         mixBreadcrumbItem></div>
+
+    <div name="Brand"
+         mixBreadcrumbItem></div>
+  </mix-breadcrumbs>
+</ng-template>
+
+<div class="data-table-page board">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar [description]="'Work on'"
+                     [title]="'Brand Supervision'">
+      <mix-button class="ms-2"><span class="material-symbols-outlined"> add </span>
+        {{ 'New brand'  }}</mix-button>
+    </mix-sub-toolbar>
+
+    <div class="data-table-page__body mt-4">
+      @if (store.vm$ |async; as vm) { @if (vm.status === 'Loading') {
+      <div class="p-4">
+        <mix-skeleton-loading type="card"></mix-skeleton-loading>
+      </div>
+      } @else if (!vm.data.length) {
+      <div class="p-4">
+        <mix-empty-content></mix-empty-content>
+      </div>
+      } @else {
+      <div class="p-4 grid grid-cols-2   md:grid-cols-6 gap-8 container">
+        @for (item of vm.data; track item.id) {
+        <div
+             class="col-span-2 h-44 relative flex w-full border border-gray-300 flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+          <div class="relative m-0 w-2/5 shrink-0 overflow-hidden rounded-xl rounded-r-none bg-white bg-clip-border text-gray-700">
+            <img class="h-full w-full object-cover"
+                 alt="image"
+                 [src]="item.logo">
+          </div>
+          <div class="p-4">
+            <h4 class="mb-2 block font-sans text-3xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+              {{ item.name | titlecase }}
+            </h4>
+
+            <h5 class="mb-4">
+              <mix-status-indicator [status]="$any('Published')"></mix-status-indicator>
+            </h5>
+
+            <div class="inline-block absolute bottom-2 right-2">
+              <button class="flex select-none items-center gap-2 rounded-lg py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-gray-300/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                      type="button">
+                Visit
+                <svg class="h-4 w-4"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor">
+                  <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+
+      </div>
+
+      }}
+
+    </div>
+  </div>
+</div>

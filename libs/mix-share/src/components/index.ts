@@ -11,6 +11,7 @@ export * from './entity-form/entity-form.component';
 export * from './loading-screen/loading-screen.component';
 export * from './main-toolbar/user-navigation/user-navigation.component';
 export * from './record-form/record-form.component';
+export * from './restart-app/restart-app.component';
 export * from './setting-dialog/setting-dialog.component';
 export * from './status-indicator/mix-status-indicator.component';
 export * from './sub-toolbar/sub-toolbar.component';

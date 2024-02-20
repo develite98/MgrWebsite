@@ -45,12 +45,6 @@ export class MixEditorComponent
   @Input() viewModePlaceHolder =
     '<span style="color: #959ba4">Click to edit</span>';
   @Input() heightPx = 100;
-  public mode = signal<'Edit' | 'View'>('View');
+  public mode = signal<'Edit' | 'View'>('Edit');
   public zoom = false;
-
-  ngAfterViewInit() {}
-
-  public toggleEditMode(event: MouseEvent) {
-    this.editor.focus(event);
-  }
 }

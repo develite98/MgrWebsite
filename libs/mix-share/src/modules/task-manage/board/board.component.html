@@ -1,32 +1,49 @@
-<div *ngIf="loadingState() as loading"
-     class="data-table-page board">
+<div #mainBoard
+     class="data-table-page board"
+     [style.--board-width]="boardWidth()">
   <div class="data-table-page__main-container">
     <mix-sub-toolbar [description]="'Work on'"
                      [title]="'Kanban Board'">
       <mix-button (click)="addTask()"
                   size="s"><span class="material-symbols-outlined"> add </span>
         {{ 'New' | transloco }}</mix-button>
-    </mix-sub-toolbar>
 
-    <mix-task-filter></mix-task-filter>
+      <div class="ml-2">
+        <mix-task-filter></mix-task-filter>
+      </div>
+
+    </mix-sub-toolbar>
 
     <div *ngIf="store.state$$() as vm"
          class="board__main-view">
       <!-- Header -->
-      <mix-task-header></mix-task-header>
+      <mix-task-header class="block sticky top-0 z-20"></mix-task-header>
       <!-- Loading View -->
-      @if (vm.status === 'Loading') {
+      @if (store.status$$() === 'Loading') {
       <mix-skeleton-loading [type]="'inline'"></mix-skeleton-loading>
       } @else {
       <!-- Main View -->
-      @if (store.getParentTasks() | async; as tasks) {
+      @if (tasks) {
       <!-- Loop task -->
-      @for (task of tasks; track task.id) {
-      <mix-task-group-list [parentTask]="task"
-                           [taskStatuses]="taskStatuses"
-                           cdkDropListGroup>
-      </mix-task-group-list>
-      } } }
+      <div class="example-list"
+           [cdkDropListData]="tasks"
+           (cdkDropListDropped)="drop($event)"
+           cdkDropList> @for (task of tasks; track task.id) {
+        <div class="w-full relative">
+          <mix-task-group-list class="example-box"
+                               [cdkDragData]="task"
+                               [parentTask]="task"
+                               [taskStatuses]="taskStatuses"
+                               cdkDrag
+                               cdkDropListGroup>
+            <span class="mix-icon text-xxl cursor-pointer absolute top-1/2 -translate-y-1/2 left"
+                  cdkDragHandle>drag_indicator</span>
+
+          </mix-task-group-list>
+        </div>
+        }
+      </div>
+      } }
     </div>
   </div>
 </div>

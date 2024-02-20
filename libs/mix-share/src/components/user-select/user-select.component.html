@@ -1,34 +1,56 @@
-<tui-select [formControl]="control"
-            [tuiTextfieldLabelOutside]="true"
-            [tuiTextfieldSize]="size"
-            [valueContent]="cardContent">
-  Choose a users
-  <tui-data-list *tuiDataList>
-    <button *ngFor="let item of userData"
-            [value]="item.id"
-            tuiOption>
-      <div class="flex items-center gap-2">
-        <tui-avatar [autoColor]="true"
-                    [rounded]="true"
-                    [text]="item.userName || item.email || ''"
-                    size="xs"></tui-avatar>
+@if (selectedUser(); as selected) {
+<span class="rounded-lg inline-flex cursor-pointer items-center px-2 py-2 gap-2 me-2 text-sm font-medium text-indigo-800 bg-indigo-100 rounded dark:bg-indigo-900 dark:text-indigo-300"
+      id="badge-dismiss-yellow"
+      [tp]="selectTpl"
+      [tpOffset]="[-5, -5]"
+      tpVariation="popper"
+      tpPlacement="bottom-start">
+  <tui-avatar [autoColor]="true"
+              [rounded]="true"
+              [text]="selected?.userName || selected?.email || ''"
+              size="xs"></tui-avatar>
 
-        <span class="card-name">{{ item.userName }}</span>
-      </div>
-    </button>
-  </tui-data-list>
-</tui-select>
+  {{ selected?.userName }}
+  <button class="inline-flex items-center p-1 ms-2 text-sm text-indigo-400 bg-transparent rounded-sm hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300"
+          data-dismiss-target="#badge-dismiss-yellow"
+          type="button"
+          aria-label="Remove"
+          (click)="$event.preventDefault(); control.patchValue(undefined)">
+    <svg class="w-2 h-2"
+         aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg"
+         fill="none"
+         viewBox="0 0 14 14">
+      <path stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+    </svg>
+    <span class="sr-only">Remove badge</span>
+  </button>
+</span>
+} @else {
+<button class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+        href="#"
+        [tp]="selectTpl"
+        [tpOffset]="[-5, 0]"
+        tpVariation="popper"
+        tpPlacement="bottom-start">+ Select user</button>
+}
 
-<ng-template #cardContent
-             let-item>
-  <div class="flex items-center gap-2">
-    <ng-container *ngIf="userDataMap[item] as item">
-      <tui-avatar [autoColor]="true"
-                  [rounded]="true"
-                  [text]="item.userName || item.email || ''"
-                  size="xs"></tui-avatar>
 
-      <span class="card-name">{{ item.userName }}</span>
-    </ng-container>
+<ng-template #selectTpl
+             let-hide>
+  @for (item of userData; track item) {
+  <div class="mix-menu-item flex gap-3"
+       (click)="control.patchValue(item.id); hide()">
+    <tui-avatar [autoColor]="true"
+                [rounded]="true"
+                [text]="item?.userName || item?.email || ''"
+                size="xs"></tui-avatar>
+
+    {{ item?.userName }}
   </div>
+  }
 </ng-template>

@@ -1,0 +1,60 @@
+<div class="w-full grid grid-cols-12">
+  <div class="col-span-3 p-4">
+    <div class="text-sm font-bold text-gray-500 mb-2 mt-4">Collections</div>
+    <cdk-tree [dataSource]="dataSource"
+              [treeControl]="treeControl">
+      <cdk-nested-tree-node *cdkTreeNodeDef="let node"
+                            class="tree-node">
+        <button disabled></button>
+        {{node.name}}
+      </cdk-nested-tree-node>
+      <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild"
+                            class="tree-node">
+        <div class="flex gap-2 items-center">
+          <button class="tree-node__toggle-btn"
+                  (click)="node.isExpanded = !node.isExpanded"
+                  [attr.aria-label]="'Toggle ' + node.name"
+                  cdkTreeNodeToggle>
+            <span class="mix-icon">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </span>
+          </button>
+          {{node.name}}
+        </div>
+
+        <div [class.tree-node__invisible]="!treeControl.isExpanded(node)">
+          <ng-container cdkTreeNodeOutlet></ng-container>
+        </div>
+      </cdk-nested-tree-node>
+    </cdk-tree>
+
+    <mix-button class="ml-3 mt-2"
+                (click)="addNew()">
+      <span class="mix-icon">add</span>
+      new item</mix-button>
+  </div>
+
+  <div class="col-span-9 p-4">
+    <div class="container prose">
+      <div #editorEl
+           class="editor notranslate"
+           translate="no"></div>
+      <mix-editor-menu *ngIf="editor"
+                       [editor]="editor"></mix-editor-menu>
+    </div>
+  </div>
+</div>
+
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Home"
+         mixBreadcrumbItem></div>
+
+    <div name="Wiki"
+         mixBreadcrumbItem></div>
+
+    <div name="💀 Git convention"
+         mixBreadcrumbItem>
+    </div>
+  </mix-breadcrumbs>
+</ng-template>

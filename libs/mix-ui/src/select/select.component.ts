@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  TemplateRef,
   inject,
 } from '@angular/core';
 import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms';
@@ -34,6 +35,7 @@ export class MixSelectComponent
   @Input() public override placeHolder = 'Type';
   @Input() public size: 'm' | 's' | 'l' = 'm';
   @Input() public labelProcess?: (item: any) => string = undefined;
+  @Input() public templateRef: TemplateRef<unknown> | undefined;
 
   @tuiPure
   stringify(item: any) {

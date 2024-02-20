@@ -1,13 +1,6 @@
 <div *ngIf="form"
      class="w-full"
      [formGroup]="form">
-  <p class="content-label mt-3">Display Name</p>
-  <mix-input placeHolder="Your table friendly name"
-             formControlName="displayName"></mix-input>
-
-  <mix-form-error class="mt-1"
-                  formControlName="displayName"></mix-form-error>
-
   <p class="content-label mt-3">System Name</p>
   <div class="flex gap-1">
     <mix-button [iconBtn]="true"
@@ -24,11 +17,4 @@
   <p class="content-label mt-3">Short Description</p>
   <mix-text-area placeHolder="Description"
                  formControlName="description"></mix-text-area>
-
-  <div class="mt-3 notification --info">
-    Visit
-    <a href="https://docs.mixcore.org/"
-       target="_blank">Here</a> to get more
-    information how Mixcore Database work.
-  </div>
 </div>

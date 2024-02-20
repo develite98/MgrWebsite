@@ -45,7 +45,7 @@ import { FormatJobNamePipe } from '../../helper';
 })
 export class JobFormComponent extends BaseComponent {
   public static dialogOption = {
-    windowClass: 'mix-record-form-dialog top-align-modal interact-modal',
+    windowClass: 'mix-record-form-dialog side-modal interact-modal',
     minWidth: '1024px',
     maxWidth: '95vw',
   };

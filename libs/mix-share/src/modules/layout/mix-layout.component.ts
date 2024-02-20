@@ -12,6 +12,7 @@ import {
   RouterModule,
 } from '@angular/router';
 import { TuiProgressModule } from '@taiga-ui/kit';
+import { CollapseBtnComponent } from '../../components/main-side-menu/collapse-btn.component';
 import { MainSideMenuComponent } from '../../components/main-side-menu/main-side-menu.component';
 import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar.component';
 
@@ -27,6 +28,7 @@ import { MainToolbarComponent } from '../../components/main-toolbar/main-toolbar
     MainToolbarComponent,
     MainSideMenuComponent,
     TuiProgressModule,
+    CollapseBtnComponent,
   ],
 })
 export class MixLayoutComponent {

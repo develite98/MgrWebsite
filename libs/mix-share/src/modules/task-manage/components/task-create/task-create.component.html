@@ -1,40 +1,44 @@
 <div class="task-create mix-dialog --default-padding"
      [formGroup]="taskForm">
   <div class="mix-dialog__header">
-    Add New {{ parentTask ? 'Task' : 'Swimlane' }}
+    Add New {{ parentTask ? 'Task' : 'User Story' }}
   </div>
 
   <div class="mix-dialog__content">
     @if(parentTask) {
-    <div class="grid grid-cols-12 gap-4 mb-1">
+    <div class="grid grid-cols-12 gap-4 mb-3">
       <div class="col-span-6">
-        <div class="mb-1 text-sub text-500">Task Type</div>
+        <div class="mb-1 text-sub font-medium">Task Type</div>
         <task-type-select formControlName="type"></task-type-select>
       </div>
 
       <div class="col-span-6">
-        <div class="mb-1 text-sub text-500">Task Priority</div>
+        <div class="mb-1 text-sub font-medium">Task Priority</div>
         <task-priority-select formControlName="taskPriority"></task-priority-select>
       </div>
     </div>
     }
 
-    <div class="mb-1 text-sub text-500">Short Summary</div>
-    <mix-input formControlName="title"
+    <div class="mb-1 text-sub font-medium">Short Summary</div>
+    <mix-input [mixAutoFocus]="true"
+               formControlName="title"
                placeHolder="Quick description about your task"></mix-input>
 
-    <div class="mt-3 mb-1 text-sub text-500">Reporter</div>
+    <div class="mt-3 mb-1 text-sub font-medium">Reporter</div>
     <mix-user-select formControlName="reporter"></mix-user-select>
 
-    <div class="mt-3 mb-1 text-sub text-500">Description</div>
+    <div class="mt-3 mb-1 text-sub font-medium">Description</div>
     <mix-rich-text-editor formControlName="description"></mix-rich-text-editor>
   </div>
 
   <div class="mix-dialog__footer">
-    <mix-button [loading]="loadingState() === 'Loading'"
-                (click)="createTask()">Create</mix-button>
     <mix-button type="outline"
                 [disabled]="loadingState() === 'Loading'"
                 (click)="dialogRef.close()">Cancel</mix-button>
+
+    <mix-button class="ms-auto"
+                [loading]="loadingState() === 'Loading'"
+                (click)="createTask()">Create</mix-button>
+
   </div>
 </div>

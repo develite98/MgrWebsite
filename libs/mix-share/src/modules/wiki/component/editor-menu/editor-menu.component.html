@@ -1,0 +1,37 @@
+<div #bubbleMenu
+     id="parent">
+  @for (menu of actions; track menu) {
+  <button class="mix-menu-item  rounded-lg"
+          (click)="menu.click()">
+    <span class="mix-icon">{{ menu.icon }}</span>
+    <span>
+      {{menu.name}}
+    </span>
+
+    @if (menu.active()) {
+    <span class="mix-icon  ml-auto">
+      check
+    </span>
+    }
+  </button>
+  }
+</div>
+
+<div #floatingMenu
+     id="parent">
+  @for (menu of actions; track menu) {
+  <button class="mix-menu-item  rounded-lg"
+          (click)="menu.click()">
+    <span class="mix-icon">{{ menu.icon }}</span>
+    <span>
+      {{menu.name}}
+    </span>
+
+    @if (menu.active()) {
+    <span class="mix-icon ml-auto">
+      check
+    </span>
+    }
+  </button>
+  }
+</div>

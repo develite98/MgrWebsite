@@ -2,7 +2,7 @@
             [size]="size"
             (click)="open(modalTpl)">
   <span class="mix-icon">filter_alt</span>
-  <span class="text-500">Filter(s)</span>
+  <span>Filter(s)</span>
 
   <tui-badge *ngIf="validFilterCount"
              class="ms-2"
@@ -15,19 +15,22 @@
   <div class="mix-dialog --default-padding">
     <h4 class="mix-dialog__header">Filter Record(s)</h4>
 
-    <div class="mix-dialog__content">
-      <ng-container *ngFor="let filter of filters; let i = index; trackByProp: 'fieldName'">
-        <mix-filter-item [columns]="columns"
-                         [filter]="filter"
-                         (deleteFilter)="deleteFilter(filter, i)"
-                         (filterChange)="onFilterValueChange($event, i)"></mix-filter-item>
-      </ng-container>
+    <div class="mix-dialog__content py-1">
+      <div class="flex flex-col gap-1 w-full">
+        <ng-container *ngFor="let filter of filters; let i = index; trackByProp: 'fieldName'">
+          <mix-filter-item [columns]="columns"
+                           [filter]="filter"
+                           (deleteFilter)="deleteFilter(filter, i)"
+                           (filterChange)="onFilterValueChange($event, i)"></mix-filter-item>
+        </ng-container>
+      </div>
+
 
       <div *ngIf="filters.length >= 2"
-           class="flex items-center gap-2">
+           class="flex items-center gap-2 mt-2">
         *Meet
 
-        <mix-select class="filter-dialog__select"
+        <mix-select class="w-40"
                     [formControl]="logicalOperateForm"
                     [items]="logicalOperateItems"
                     size="s"></mix-select>

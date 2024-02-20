@@ -1,5 +1,8 @@
 <div class="inline-input"
-     [class.--empty]="!control.value">
+     [class.--empty]="!control.value"
+     [class.text-2xl]="size === '2xl'"
+     [class.text-lg]="size === 'base'"
+     [class.text-xl]="size === 'xl'">
   <tui-input-inline *ngIf="editing; else text"
                     [formControl]="control"
                     (focusedChange)="onFocusedChange($event)"

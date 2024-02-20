@@ -1,0 +1,44 @@
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Home"
+         mixBreadcrumbItem></div>
+
+    <div name="Brand"
+         [templateRef]="brandSelect"
+         mixBreadcrumbItem>
+      <ng-template #brandSelect>
+        <mix-brand-select (selectedItemChange)="brandUi.changeSelected($event)"></mix-brand-select>
+      </ng-template>
+    </div>
+
+    <div name="Branch"
+         mixBreadcrumbItem>
+    </div>
+  </mix-breadcrumbs>
+</ng-template>
+
+<div class="data-table-page board">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar [description]="'Work on'"
+                     [title]="'Menu'">
+      <mix-button class="ms-auto"
+                  type="outline"><span class="material-symbols-outlined"> add </span>
+        {{ 'Import Menu'  }}</mix-button>
+    </mix-sub-toolbar>
+
+    <div class="data-table-page__body mt-4 menus">
+      <div class="sm:container p-4">
+        <div class="grid grid-cols-12 gap-6">
+          <div class="col-span-3">
+            <mix-menu-categories></mix-menu-categories>
+            <mix-menu-addons></mix-menu-addons>
+          </div>
+          <div class="col-span-7">
+            <mix-menu-items></mix-menu-items>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

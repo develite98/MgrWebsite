@@ -8,18 +8,20 @@ html {
 
   --form-error: #ff3333;
   --form-error-padding: 0.75rem;
-  --default-padding: 16px;
+  --default-padding: 1rem;
   --container-padding: 0px var(--default-padding);
   --default-widget-padding: var(--default-padding);
   --element-rounded: 0.5rem;
+  --element-height: 2.5rem;
+  --element-height-s: 30px;
   --main-layout-gap: 8px;
-
+  --main-header-height: 3.25rem;
   --main-backdrop-color: rgb(238 238 238 / 85%);
   --menu-active-color: rgba(255, 255, 255, 45%);
   --child-menu-active-color: rgba(1, 1, 1, 5%);
 
   --background-color-primary: #ffffff;
-  --background-color-secondary: #f8f8f8;
+  --background-color-secondary: #eaf0f3;
   --background-color-03: rgba(255, 255, 255, 55%);
   --background-color-hight-light: #d8dee9;
   --background-color-error: #ff3333;
@@ -29,6 +31,8 @@ html {
 
   --border-color-default: #ededed;
   --border-radius-default: 6px;
+  --shadow-200: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px,
+    rgba(0, 0, 0, 0.06) -4px 4px 8px 0px;
 
   --primary-color: #505ac9;
   --default-primary-color-hue: 210;
@@ -46,14 +50,7 @@ html {
   --text-01: var(--tui-text-01);
   --text-02: var(--tui-text-02);
   --text-03: var(--tui-text-03);
-
-  --text-size-xxs: 0.625rem;
-  --text-size-xs: 0.8rem;
-  --text-size-s: 0.875rem;
-  --text-size-m: 1rem;
-  --text-size-l: 1.125rem;
-  --text-size-xl: 1.25rem;
-  --text-size-xxl: 1.5rem;
+  --tui-font-text-m: 0.5rem;
 
   --blue-02: #008aa8;
   --ds-background-neutral-hovered: #091e4224;
@@ -68,9 +65,80 @@ html {
     var(--vivid-pink) 50%,
     var(--electric-violet) 100%
   );
+
+  --ag-alpine-active-color: #2196f3;
+  --ag-selected-row-background-color: rgba(33, 150, 243, 0.3);
+  --ag-row-hover-color: rgba(33, 150, 243, 0.1);
+  --ag-column-hover-color: rgba(33, 150, 243, 0.1);
+  --ag-input-focus-border-color: rgba(33, 150, 243, 0.4);
+  --ag-range-selection-background-color: rgba(33, 150, 243, 0.2);
+  --ag-range-selection-background-color-2: rgba(33, 150, 243, 0.36);
+  --ag-range-selection-background-color-3: rgba(33, 150, 243, 0.49);
+  --ag-range-selection-background-color-4: rgba(33, 150, 243, 0.59);
+  --ag-background-color: #fff;
+  --ag-foreground-color: #181d1f;
+  --ag-border-color: #babfc7;
+  --ag-secondary-border-color: #dde2eb;
+  --ag-header-background-color: #f8f8f8;
+  --ag-tooltip-background-color: #f8f8f8;
+  --ag-odd-row-background-color: #fcfcfc;
+  --ag-control-panel-background-color: #f8f8f8;
+  --ag-subheader-background-color: #fff;
+  --ag-invalid-color: #e02525;
+  --ag-checkbox-unchecked-color: #999;
+  --ag-advanced-filter-join-pill-color: #f08e8d;
+  --ag-advanced-filter-column-pill-color: #a6e194;
+  --ag-advanced-filter-option-pill-color: #f3c08b;
+  --ag-advanced-filter-value-pill-color: #85c0e4;
+  --ag-checkbox-background-color: var(--ag-background-color);
+  --ag-checkbox-checked-color: var(--ag-alpine-active-color);
+  --ag-range-selection-border-color: var(--ag-alpine-active-color);
+  --ag-secondary-foreground-color: var(--ag-foreground-color);
+  --ag-input-border-color: var(--ag-border-color);
+  --ag-input-border-color-invalid: var(--ag-invalid-color);
+  --ag-input-focus-box-shadow: 0 0 2px 0.1rem var(--ag-input-focus-border-color);
+  --ag-disabled-foreground-color: rgba(24, 29, 31, 0.5);
+  --ag-chip-background-color: rgba(24, 29, 31, 0.07);
+  --ag-input-disabled-border-color: rgba(186, 191, 199, 0.3);
+  --ag-input-disabled-background-color: rgba(186, 191, 199, 0.15);
+  --ag-borders: solid 1px;
+  --ag-border-radius: 3px;
+  --ag-borders-side-button: none;
+  --ag-side-button-selected-background-color: transparent;
+  --ag-header-column-resize-handle-display: block;
+  --ag-header-column-resize-handle-width: 2px;
+  --ag-header-column-resize-handle-height: 30%;
+  --ag-grid-size: 12px;
+  --ag-icon-size: 16px;
+  --ag-row-height: calc(var(--ag-grid-size) * 7);
+  --ag-header-height: calc(var(--ag-grid-size) * 8);
+  --ag-list-item-height: calc(var(--ag-grid-size) * 4);
+  --ag-column-select-indent-size: var(--ag-icon-size);
+  --ag-set-filter-indent-size: var(--ag-icon-size);
+  --ag-advanced-filter-builder-indent-size: calc(
+    var(--ag-icon-size) + var(--ag-grid-size) * 2
+  );
+  --ag-cell-horizontal-padding: calc(var(--ag-grid-size) * 3);
+  --ag-cell-widget-spacing: calc(var(--ag-grid-size) * 2);
+  --ag-widget-container-vertical-padding: calc(var(--ag-grid-size) * 2);
+  --ag-widget-container-horizontal-padding: calc(var(--ag-grid-size) * 2);
+  --ag-widget-vertical-spacing: calc(var(--ag-grid-size) * 1.5);
+  --ag-toggle-button-height: 18px;
+  --ag-toggle-button-width: 28px;
+  --ag-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --ag-font-size: 13px;
+  --ag-icon-font-family: agGridAlpine;
+  --ag-selected-tab-underline-color: var(--ag-alpine-active-color);
+  --ag-selected-tab-underline-width: 2px;
+  --ag-selected-tab-underline-transition-speed: 0.3s;
+  --ag-tab-min-width: 240px;
+  --ag-card-shadow: 0 1px 4px 1px rgba(186, 191, 199, 0.4);
+  --ag-popup-shadow: var(--ag-card-shadow);
+  --ag-side-bar-panel-width: 250px;
 }
 
-html[mode='dark'] {
+html[class='dark'] {
   &:root {
     --primary-color: #7b83eb;
     --main-backdrop-color: rgb(1 1 1 / 55%);
@@ -125,7 +193,7 @@ html[mode='dark'] {
     --tui-neutral-fill: #959ba4;
     --tui-neutral-bg: rgba(149, 155, 164, 0.32);
     --tui-neutral-bg-hover: rgba(149, 155, 164, 0.48);
-    --tui-text-01: #ffffff;
+    --tui-text-01: #ffffff !important;
     --tui-text-02: rgba(255, 255, 255, 0.72);
     --tui-text-03: rgba(255, 255, 255, 0.6);
     --tui-link: #6788ff;
@@ -137,7 +205,6 @@ html[mode='dark'] {
     --tui-autofill: var(--tui-autofill-night);
     --tui-elevation-01: #222;
     --tui-elevation-02: #222;
-
     --ds-background-neutral-hovered: #091e4224;
   }
 }

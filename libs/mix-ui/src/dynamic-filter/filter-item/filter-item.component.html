@@ -1,23 +1,23 @@
-<div class="filter-item" [formGroup]="form">
-  <mix-select
-    [items]="columns"
-    [labelProcess]="columnLabel"
-    formControlName="column"
-  ></mix-select>
+<div class="flex gap-1 items-center">
+  <div class="grid grid-cols-3 py-1 gap-1"
+       [formGroup]="form">
+    <mix-select class="col-span-1"
+                [items]="columns"
+                [labelProcess]="columnLabel"
+                formControlName="column"></mix-select>
 
-  <mix-select
-    [items]="operators"
-    [labelProcess]="operatorLabel"
-    formControlName="operator"
-  ></mix-select>
+    <mix-select class="col-span-1"
+                [items]="operators"
+                [labelProcess]="operatorLabel"
+                formControlName="operator"></mix-select>
 
-  <mix-filter-input
-    [value]="filter.value"
-    [dataType]="form.value.column!.dataType"
-    (valueChange)="filterValueChange($event)"
-  ></mix-filter-input>
+    <mix-filter-input class="col-span-1"
+                      [dataType]="form.value.column!.dataType"
+                      [value]="filter.value"
+                      (valueChange)="filterValueChange($event)"></mix-filter-input>
+  </div>
 
-  <mix-button [iconBtn]="true" type="icon" (click)="deleteFilter.emit()"
-    ><span class="mix-icon">close</span></mix-button
-  >
+  <mix-button type="icon"
+              [iconBtn]="true"
+              (click)="deleteFilter.emit()"><span class="mix-icon">close</span></mix-button>
 </div>

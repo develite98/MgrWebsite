@@ -4,7 +4,7 @@
     Title:
     <editable (save)="save()">
       <ng-template viewMode>
-        <span class="text-bold">{{ form.controls.title.value }}</span>
+        <span class="font-bold">{{ form.controls.title.value }}</span>
       </ng-template>
 
       <ng-template editMode>
@@ -20,7 +20,7 @@
     Path:
     <editable (save)="save()">
       <ng-template viewMode>
-        <span class="text-bold">{{
+        <span class="font-bold">{{
           form.controls.path.value || 'Empty path'
         }}</span>
       </ng-template>
@@ -40,7 +40,7 @@
     <editable (save)="save()">
       <ng-template viewMode>
         <span *ngIf="form.controls?.icon?.value"
-              class="material-symbols-outlined text-bold">{{ form.controls.icon.value }}</span>
+              class="material-symbols-outlined font-bold">{{ form.controls.icon.value }}</span>
         <span *ngIf="!form.controls?.icon?.value">No icon found</span>
       </ng-template>
 
@@ -57,7 +57,7 @@
     Priority:
     <editable (save)="save()">
       <ng-template viewMode>
-        <span class="text-bold">{{ form.controls.priority.value || 0 }}</span>
+        <span class="font-bold">{{ form.controls.priority.value || 0 }}</span>
       </ng-template>
 
       <ng-template editMode>
@@ -101,11 +101,12 @@
                placeHolder="Admin path url"></mix-input>
 
     <span class="content-label mt-3">Icon</span>
-    <span class="content-sub-description">We use Google Symbol as icon, please
+    <!-- TODO -->
+    <!-- <span class="content-sub-description">We use Google Symbol as icon, please
       <a href="https://fonts.google.com/icons"
          tuiLink
          target="_blank">visit here</a>
-      to get the correct icon name</span>
+      to get the correct icon name</span> -->
 
     <mix-input class="mt-1"
                formControlName="icon"

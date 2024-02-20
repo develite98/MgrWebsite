@@ -2,9 +2,10 @@
   display: flex;
   gap: 6px;
   align-items: center;
-  padding: 0.8rem 0.8rem 0.8rem 0rem;
+  padding: 0.2rem 0.8rem 0.2rem 0rem;
+  padding-left: 1.6rem;
   border-bottom: solid 1px #eceff4;
-  transition: all 0.2s ease-in-out;
+  width: var(--board-width);
 
   .expand-icon {
     transition: all 0.2s ease-in-out;
@@ -12,21 +13,33 @@
   }
 
   &__title {
-    max-width: 240px;
-    overflow: hidden;
+    @apply text-sm overflow-hidden cursor-pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: var(--text-size-s);
-    cursor: pointer;
+    flex-basis: 20vw;
+    max-width: 20vw;
+  }
+
+  &__due-date {
+    flex-basis: 130px;
+    max-width: 130px;
+  }
+
+  &__assignee {
+    flex-basis: 130px;
+    max-width: 130px;
+  }
+
+  &__progress {
+    flex-basis: 20vw;
+    max-width: 20vw;
   }
 
   &.--open {
-    color: var(--blue-02, #008aa8);
     border-bottom: unset;
 
     .expand-icon {
       transform: rotate(0deg);
-      color: var(--blue-02);
     }
   }
 }

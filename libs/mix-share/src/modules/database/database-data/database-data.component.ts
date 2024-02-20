@@ -10,6 +10,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   DataTypeToAgCellEditor,
+  DbContextFixId,
   MixDatabase,
   MixDynamicData,
   MixFilter,
@@ -23,6 +24,7 @@ import {
 } from '@mixcore/share/components';
 import {
   DomHelper,
+  camelCase,
   extractBaseSegment,
   toastObserverProcessing,
 } from '@mixcore/share/helper';
@@ -62,6 +64,7 @@ import { CustomHeaderComponent } from '../components/custom-header/custom-header
 import { DatabaseInlineSelectComponent } from '../components/database-inline-select/database-inline-select.component';
 import { DatabaseVerticalToolbarComponent } from '../components/vertical-toolbar/database-vertical-toolbar.component';
 import { DatabaseDataStore } from '../store/database-data.store';
+import { DbUiStore } from '../store/db-ui.store';
 
 @Component({
   selector: 'mix-database-data',
@@ -104,6 +107,7 @@ export class DatabaseDataComponent
   public store = inject(DatabaseDataStore);
   public dialog = inject(DialogService);
   public activeRoute = inject(ActivatedRoute);
+  public dbUiStore = inject(DbUiStore);
 
   public dbSysName = '';
   public activeCol = '';
@@ -133,7 +137,7 @@ export class DatabaseDataComponent
   };
   public readonly actionColumnDef: ColDef = {
     resizable: false,
-    width: 80,
+    width: 120,
     colId: 'action',
     field: 'action',
     sortable: false,
@@ -176,19 +180,22 @@ export class DatabaseDataComponent
       )
       .subscribe((s) => {
         if (s.db) {
-          this.allColumnDefs = s.db.columns.map(
-            (x) =>
-              <ColDef>{
-                colId: x.systemName,
-                field: x.systemName,
-                headerComponentParams: {
-                  displayName: x.displayName,
-                  dataType: x.dataType,
-                  columnType: 'value',
-                },
-                cellEditor: DataTypeToAgCellEditor(x.dataType),
-              }
+          this.dbUiStore.changeContextId(
+            s.db.mixDatabaseContextId ?? DbContextFixId.MasterDb
           );
+          this.allColumnDefs = s.db.columns.map((x) => {
+            const systemName = camelCase(x.systemName);
+            return <ColDef>{
+              colId: systemName,
+              field: systemName,
+              headerComponentParams: {
+                displayName: x.displayName,
+                dataType: x.dataType,
+                columnType: 'value',
+              },
+              cellEditor: DataTypeToAgCellEditor(x.dataType),
+            };
+          });
           this.columnNames = s.db.columns.map((x) => x.displayName);
           this.displayColumns = this.columnNames;
 
@@ -280,19 +287,23 @@ export class DatabaseDataComponent
       return;
     }
 
+    this.processDeleteData(selectedData.map((s) => s.id!));
+  }
+
+  public processDeleteData(ids: number[]) {
     this.modal
       .warning('Do you want to delete these data(s) ?')
       .subscribe((ok) => {
         if (!ok) return;
-        const requests = selectedData.map((d) =>
-          this.mixApi.databaseApi.deleteData(this.dbSysName, d.id!)
+        const requests = ids.map((id) =>
+          this.mixApi.databaseApi.deleteData(this.dbSysName, id!)
         );
 
         forkJoin(requests)
           .pipe(toastObserverProcessing(this.toast))
           .subscribe({
             next: () => {
-              this.store.removeData(selectedData.map((x) => x.id!));
+              this.store.removeData(ids);
               this.selectedItems = [];
               this.gridApi.deselectAll();
             },
@@ -361,15 +372,7 @@ export class DatabaseDataComponent
 
       const dialogRef = this.dialog.open(RecordFormComponent, {
         data: { mixDatabase: value.db, data: undefined },
-        windowClass: RecordFormComponent.windowClass,
-        minWidth: RecordFormComponent.minWidth,
-        maxWidth: RecordFormComponent.maxWidth,
-        dragConstraint: 'bounce',
-        draggable: true,
-        enableClose: {
-          escape: true,
-          backdrop: false,
-        },
+        ...RecordFormComponent.dialogOption,
       });
 
       dialogRef.afterClosed$.subscribe((value) => {
@@ -391,14 +394,7 @@ export class DatabaseDataComponent
 
       const dialogRef = this.dialog.open(RecordFormComponent, {
         data: { mixDatabase: state.db, data: state.data[dataIndex] },
-        windowClass: RecordFormComponent.windowClass,
-        minWidth: RecordFormComponent.minWidth,
-        maxWidth: RecordFormComponent.maxWidth,
-        draggable: true,
-        enableClose: {
-          escape: true,
-          backdrop: false,
-        },
+        ...RecordFormComponent.dialogOption,
       });
 
       dialogRef.afterClosed$.subscribe((value) => {
@@ -413,5 +409,9 @@ export class DatabaseDataComponent
     });
 
     this.gridApi.onRowHeightChanged();
+  }
+
+  public onPageChange(index: number) {
+    this.store.changePage(index);
   }
 }

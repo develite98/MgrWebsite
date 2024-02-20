@@ -1,6 +1,7 @@
 <button class="btn {{typeMaps[type]}} w-full flex items-center gap-1"
         [class.--disabled]="loading || disabled"
         [class.--icon-btn]="isIcon"
+        [class.--size-xs]="size === 'xs'"
         [type]="nativeType">
   <svg *ngIf="loading"
        class="inline mr-1 dot w-4 h-4 animate-spin"

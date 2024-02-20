@@ -11,6 +11,7 @@ import {
 import { MixApiFacadeService } from '@mixcore/share/api';
 import { BaseState } from '@mixcore/share/base';
 import { ObjectUtil } from '@mixcore/share/form';
+import { camelCase } from '@mixcore/share/helper';
 import { ComponentStore } from '@ngrx/component-store';
 import { catchError, filter, forkJoin, of } from 'rxjs';
 
@@ -65,7 +66,17 @@ export class DatabaseDataStore extends ComponentStore<DatabaseDataState> {
 
     forkJoin([
       this.mixApi.databaseApi
-        .getDataByName<MixDynamicData>(dbName, request)
+        .getDataByName<MixDynamicData>(dbName, {
+          ...request,
+          mixDatabaseName: dbName,
+          compareType: 'or',
+          direction: 'Desc',
+          filterType: 'contain',
+          isGroup: false,
+          orderBy: 'CreatedDateTime',
+          searchMethod: 'Like',
+          status: 'Published',
+        })
         .pipe(
           catchError(() => {
             return of({
@@ -74,19 +85,26 @@ export class DatabaseDataStore extends ComponentStore<DatabaseDataState> {
                 pageIndex: 0,
                 pageSize: 30,
               },
-              error: true,
+              mixDatabaseName: dbName,
             });
           })
         ),
       getDbReq,
     ]).subscribe({
       next: ([result, db]) => {
+        const columns = db.columns
+          .map((c) => {
+            c.systemName = camelCase(c.systemName);
+            return c;
+          })
+          .sort((a, b) => a.priority - b.priority);
+
         this.patchState((s) => ({
           ...s,
           status: 'Success',
           data: result.items,
           db: db,
-          columns: db.columns,
+          columns: columns,
           searchColumnKeys: db.columns
             .filter((x) => STRING_DATA_TYPE.includes(x.dataType))
             .map((x) => x.systemName)
@@ -94,7 +112,7 @@ export class DatabaseDataStore extends ComponentStore<DatabaseDataState> {
           loadDataError: (result as any)['error'],
           columnKeys: [
             'checkbox',
-            ...db.columns.map((x) => x.systemName),
+            ...columns.map((x) => x.systemName),
             'add-col',
           ],
           pageInfo: result.pagingData,

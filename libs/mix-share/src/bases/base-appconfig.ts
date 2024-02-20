@@ -50,6 +50,11 @@ export const FormlyImportModule = FormlyModule.forRoot({
       defaultOptions: { props: { type: 'text' } },
     },
     {
+      name: DataType.String,
+      component: MixFormlyInputComponent,
+      defaultOptions: { props: { type: 'text' } },
+    },
+    {
       name: DataType.Custom,
       component: MixFormlyInputComponent,
       defaultOptions: { props: { type: 'text' } },
@@ -61,6 +66,10 @@ export const FormlyImportModule = FormlyModule.forRoot({
     },
     {
       name: DataType.DateTime,
+      component: MixFormlyDateTimePickerComponent,
+    },
+    {
+      name: DataType.DateTimeLocal,
       component: MixFormlyDateTimePickerComponent,
     },
     { name: DataType.Integer, component: MixFormlyInputNumberComponent },
@@ -131,7 +140,7 @@ export const BaseAppProvider = [
     defaultVariation: 'tooltip',
     variations: {
       tooltip: tooltipVariation,
-      popper: { ...popperVariation, animation: 'scale', duration: 100 },
+      popper: { ...popperVariation },
     },
   }),
   {

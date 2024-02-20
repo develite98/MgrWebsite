@@ -3,62 +3,73 @@ mix-button {
   width: fit-content;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.button-base-styles {
+  @apply text-sm;
+  @apply text-center whitespace-nowrap;
+  @apply inline-flex justify-center items-center;
+  @apply hover:brightness-[1.15];
+  @apply focus:outline-none;
+  @apply cursor-pointer;
+  @apply outline-none;
 
-@layer components {
-  .button-base-styles {
-    @apply text-sm;
-    @apply px-3.5 py-2;
-    @apply text-center whitespace-nowrap;
-    @apply inline-flex justify-center items-center;
-    @apply hover:brightness-[1.15];
-    @apply transition-all;
-    @apply focus:outline-none;
-    @apply cursor-pointer;
-    @apply outline-none;
+  transition: filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn {
+  @apply button-base-styles rounded-lg active:brightness-90 px-3.5 py-2;
+  // min-height: var(--element-height);
+  // height: var(--element-height);
+}
+
+.btn.--size-xs {
+  @apply px-3 py-1;
+  // min-height: ;
+}
+
+.btn.primary {
+  @apply text-white bg-primary focus:outline-none focus:ring-primary;
+
+  .dot {
+    @apply text-white;
+  }
+}
+
+.btn.secondary {
+  @apply text-gray-900 text-primary focus:outline-none bg-white border border-gray-300 hover:border-primary hover:bg-gray-100 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700;
+
+  .dot {
+    @apply text-gray-900;
+  }
+}
+
+.btn.danger {
+  @apply text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300;
+
+  .dot {
+    @apply text-white;
+  }
+}
+
+.btn {
+  &.--disabled {
+    @apply opacity-50 cursor-not-allowed active:scale-100 hover:brightness-100;
   }
 
-  .btn {
-    @apply button-base-styles rounded active:scale-[95%] active:brightness-90;
+  &.--icon-btn {
+    @apply p-1.5;
+    width: var(--element-height);
+    min-width: var(--element-height);
+    min-height: var(--element-height);
+    height: var(--element-height);
   }
 
-  .btn.primary {
-    @apply text-white bg-primary focus:outline-none focus:ring-primary;
-
-    .dot {
-      @apply text-white;
-    }
+  &.--size-2xl {
+    @apply text-xl px-3 py-4;
   }
+}
 
-  .btn.secondary {
-    @apply text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700;
-
-    .dot {
-      @apply text-gray-900;
-    }
-  }
-
-  .btn.danger {
-    @apply text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300;
-
-    .dot {
-      @apply text-white;
-    }
-  }
-
-  .btn {
-    &.--disabled {
-      @apply opacity-50 cursor-not-allowed active:scale-100 hover:brightness-100;
-    }
-
-    &.--icon-btn {
-      @apply p-1.5;
-    }
-
-    &.--size-2xl {
-      @apply text-xl px-3 py-4;
-    }
-  }
+.touchable {
+  @apply transition-all active:brightness-90;
 }

@@ -26,7 +26,6 @@ import { TippyDirective } from '@ngneat/helipopper';
 import { TuiBreadcrumbsModule } from '@taiga-ui/kit';
 import { filter, startWith } from 'rxjs';
 import { LocationControllerComponent } from '../location-controller/location-controller.component';
-import { CollapseBtnComponent } from '../main-side-menu/collapse-btn.component';
 import { ToolbarService } from './toolbar.service';
 import { UserNavigationComponent } from './user-navigation/user-navigation.component';
 
@@ -50,7 +49,6 @@ interface BreadcrumbOption {
     MixButtonComponent,
     UserNavigationComponent,
     PortalModule,
-    CollapseBtnComponent,
   ],
   templateUrl: './main-toolbar.component.html',
   styleUrls: ['./main-toolbar.component.scss'],

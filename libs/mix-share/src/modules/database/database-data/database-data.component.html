@@ -101,8 +101,7 @@
             <span class="mix-icon">code</span> API Document</mix-button>
 
 
-          <mix-button class="ml-2"
-                      [type]="'outline'">
+          <mix-button [type]="'outline'">
             <span class="mix-icon"> system_update_alt </span>
             Group By
           </mix-button>
@@ -157,7 +156,8 @@
 
           <tui-pagination *ngIf="!!vm.pageInfo?.totalPage"
                           [index]="vm.pageInfo.pageIndex"
-                          [length]="vm.pageInfo.totalPage ?? 0"></tui-pagination>
+                          [length]="vm.pageInfo.totalPage ?? 0"
+                          (indexChange)="onPageChange($event)"></tui-pagination>
         </div>
       </div>
     </ng-container>

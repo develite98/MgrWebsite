@@ -11,4 +11,5 @@ import { MixTaskNew } from '@mixcore/lib/model';
 })
 export class TaskDateDisplayComponent {
   @Input() public task!: MixTaskNew;
+  @Input() public showFull = false;
 }

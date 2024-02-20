@@ -8,4 +8,9 @@ export class UserStore extends BaseCRUDStore<UserListVm> {
     this.mixApi.accountApi.getUserList({ ...request, loadNestedData: true });
 
   public override requestName = 'users';
+  public override searchColumns = ['Name', 'Email'];
+  public override searchColumnsDict: { [key: string]: string } = {
+    Name: 'userName',
+    Description: 'email',
+  };
 }

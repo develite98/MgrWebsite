@@ -37,16 +37,16 @@ export class MixDatabase {
     this.mixDatabaseContextId =
       value.mixDatabaseContextId ?? DbContextFixId.MasterDb;
 
-    this.updatePermissions = MixDatabase.parsePermission(
-      value.updatePermissions
-    );
-    this.readPermissions = MixDatabase.parsePermission(value.readPermissions);
-    this.deletePermissions = MixDatabase.parsePermission(
-      value.deletePermissions
-    );
-    this.createPermissions = MixDatabase.parsePermission(
-      value.createPermissions
-    );
+    // this.updatePermissions = MixDatabase.parsePermission(
+    //   value.updatePermissions
+    // );
+    // this.readPermissions = MixDatabase.parsePermission(value.readPermissions);
+    // this.deletePermissions = MixDatabase.parsePermission(
+    //   value.deletePermissions
+    // );
+    // this.createPermissions = MixDatabase.parsePermission(
+    //   value.createPermissions
+    // );
   }
 
   public static parsePermission(value: string[] | object | undefined) {
@@ -76,6 +76,7 @@ export interface MixRelationShip {
 
 export enum RelationShipType {
   OneToMany = 'OneToMany',
+  ManyToMany = 'ManyToMany',
 }
 export class MixColumn {
   systemName!: string;
@@ -115,10 +116,12 @@ export interface Upload {
 }
 
 export enum DataType {
+  String = 'String',
   Custom = 'Custom',
   DateTime = 'DateTime',
   Date = 'Date',
   Time = 'Time',
+  DateTimeLocal = 'DateTimeLocal',
   Duration = 'Duration',
   PhoneNumber = 'PhoneNumber',
   Double = 'Double',
@@ -146,6 +149,7 @@ export enum DataType {
   Array = 'Array',
   ArrayMedia = 'ArrayMedia',
   ArrayRadio = 'ArrayRadio',
+  Long = 'Long',
 }
 
 export const STRING_DATA_TYPE = [
@@ -187,6 +191,7 @@ export const DataTypeColors: { [key in DataType]: string } = {
   PhoneNumber: '#1abc9c',
   Double: '#f1c40f',
   Text: '#3498db',
+  String: '#3498db',
   Html: '#e74c3c',
   MultilineText: '#2ecc71',
   EmailAddress: '#e67e22',
@@ -210,6 +215,8 @@ export const DataTypeColors: { [key in DataType]: string } = {
   Array: '#3498db',
   ArrayMedia: '#e74c3c',
   ArrayRadio: '#2ecc71',
+  DateTimeLocal: '#2ecc71',
+  Long: '#3498db',
 };
 
 export type DataTypeConfig = {
@@ -264,6 +271,12 @@ export const DataTypeDisplay: Record<DataType, DataTypeConfig> = {
     description: '',
   },
   [DataType.Text]: {
+    icon: 'text_fields',
+    name: 'Text',
+    value: DataType.Text,
+    description: '',
+  },
+  [DataType.String]: {
     icon: 'text_fields',
     name: 'Text',
     value: DataType.Text,
@@ -408,7 +421,29 @@ export const DataTypeDisplay: Record<DataType, DataTypeConfig> = {
     value: DataType.ArrayRadio,
     description: '',
   },
+  [DataType.DateTimeLocal]: {
+    name: 'Date Time Local',
+    value: DataType.DateTimeLocal,
+    description: '',
+    icon: 'calendar_month',
+  },
+  [DataType.Long]: {
+    name: 'Long',
+    value: DataType.Long,
+    description: '',
+    icon: '123',
+  },
 };
+
+export enum DatabaseNamingConvention {
+  SnakeCase = 'SnakeCase',
+  TitleCase = 'TitleCase',
+}
+export const NamingConventionDisplay: Record<DatabaseNamingConvention, string> =
+  {
+    [DatabaseNamingConvention.SnakeCase]: 'Snake case',
+    [DatabaseNamingConvention.TitleCase]: 'Title case',
+  };
 
 export enum DatabaseProvider {
   SQLSERVER = 'SQLSERVER',

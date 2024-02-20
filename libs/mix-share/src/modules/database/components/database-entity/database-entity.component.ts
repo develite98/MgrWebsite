@@ -14,7 +14,7 @@ import {
   inject,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { MixColumn } from '@mixcore/lib/model';
+import { DataType, MixColumn } from '@mixcore/lib/model';
 import { MixApiFacadeService } from '@mixcore/share/api';
 import { EntityFormComponent } from '@mixcore/share/components';
 import { toastObserverProcessing } from '@mixcore/share/helper';
@@ -103,5 +103,55 @@ export class DatabaseEntityComponent {
       this.columnsChange.emit(this.columns);
       this.cdr.detectChanges();
     }
+  }
+
+  public copyAsTypescriptInterface() {
+    const buildDataType = (dataType: DataType) => {
+      switch (dataType) {
+        case DataType.Integer:
+        case DataType.Long:
+        case DataType.Double:
+          return 'number';
+        case DataType.PhoneNumber:
+        case DataType.String:
+        case DataType.MultilineText:
+        case DataType.Html:
+        case DataType.Color:
+        case DataType.Url:
+        case DataType.QRCode:
+        case DataType.PostalCode:
+        case DataType.Icon:
+        case DataType.ImageUrl:
+        case DataType.Password:
+        case DataType.Guid:
+        case DataType.TuiEditor:
+        case DataType.CreditCard:
+        case DataType.Text:
+          return 'string';
+        case DataType.Json:
+          return 'object';
+        case DataType.DateTime:
+        case DataType.Date:
+        case DataType.DateTimeLocal:
+          return 'Date';
+        default:
+          return 'string';
+      }
+    };
+
+    const systems = [
+      {
+        systemName: 'id',
+        dataType: DataType.Integer,
+      },
+    ];
+
+    const interfaceString =
+      [...systems, ...this.columns].reduce((acc, item) => {
+        return `${acc}\n  ${item.systemName}: ${buildDataType(item.dataType)};`;
+      }, `export interface YourInterface {`) + '\n}';
+
+    navigator.clipboard.writeText(interfaceString);
+    this.toast.success('Copied');
   }
 }

@@ -25,89 +25,53 @@ export const CMS_ROUTES = {
       path: 'news',
       fullPath: 'app/news',
     },
-    workspace: {
-      path: 'workspace',
-      fullPath: 'app/workspace',
-    },
-    board: {
-      path: 'board',
-      fullPath: 'app/workspace/board',
-    },
-    project: {
-      path: 'project',
-      fullPath: 'app/workspace/project',
-    },
-    timeline: {
-      path: 'timeline',
-      fullPath: 'app/workspace/timeline',
-    },
-    inbox: {
-      path: 'inbox',
-      fullPath: 'app/inbox',
-    },
-    logs: {
-      path: 'logs',
-      fullPath: 'app/logs',
-    },
-    post: {
-      path: 'post',
-      fullPath: 'app/post',
-    },
-    page: {
-      path: 'page',
-      fullPath: 'app/page',
-    },
-    module: {
-      path: 'module',
-      fullPath: 'app/module',
-    },
     database: {
-      path: 'database',
-      fullPath: 'app/database',
+      path: 'db',
+      fullPath: 'app/db',
+    },
+    databaseDoc: {
+      path: 'open-api',
+      fullPath: 'app/db/open-api',
     },
     databaseQuery: {
-      path: 'database/query',
-      fullPath: 'app/database/query',
+      path: 'query',
+      fullPath: 'app/db/query',
     },
     databaseContext: {
-      path: 'database/contexts',
-      fullPath: 'app/database/contexts',
+      path: 'contexts',
+      fullPath: 'app/db/contexts',
     },
-    'database-doc': {
-      path: 'open-api',
-      fullPath: 'app/database/open-api',
+    cam: {
+      path: 'cam',
+      fullPath: 'app/cam',
     },
-    'database-data': {
-      path: 'db-data',
-      fullPath: 'app/db-data',
-    },
-    settings: {
-      path: 'app-settings',
-      fullPath: 'app/app-settings',
-    },
-    user: {
-      path: 'user',
-      fullPath: 'app/user',
-    },
-    permission: {
-      path: 'permission',
-      fullPath: 'app/permission',
+    users: {
+      path: 'users',
+      fullPath: 'app/cam/users',
     },
     roles: {
       path: 'roles',
-      fullPath: 'app/roles',
+      fullPath: 'app/cam/roles',
     },
-    order: {
-      path: 'order',
-      fullPath: 'app/order',
+    events: {
+      path: 'events',
+      fullPath: 'app/events',
     },
-    discount: {
-      path: 'discount',
-      fullPath: 'app/discount',
+    schedulers: {
+      path: 'schedulers',
+      fullPath: 'app/events/schedulers',
     },
-    promotion: {
-      path: 'promotion',
-      fullPath: 'app/promotion',
+    work: {
+      path: 'work',
+      fullPath: 'app/work',
+    },
+    doc: {
+      path: 'doc',
+      fullPath: 'app/doc',
+    },
+    brandSupervision: {
+      path: 'bo',
+      fullPath: 'app/bo',
     },
   },
 };
@@ -128,7 +92,6 @@ export const ROUTES: Route[] = [
   {
     path: CMS_ROUTES.portal.path,
     component: MixLayoutComponent,
-    data: breadcrumbName('Home'),
     canActivate: [notLoginPageGuard],
     loadChildren: () =>
       import('./pages/portal/portal.routes').then((m) => m.PortalRoutes),

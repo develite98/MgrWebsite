@@ -20,7 +20,7 @@
       </div>
       } @else {
       <div class="p-3 mb-2">
-        <div class="text-sub text-500 mb-1">Choose provider:</div>
+        <div class="text-sub font-medium mb-1">Choose provider:</div>
         <tui-filter [content]="content"
                     [formControl]="filterForm"
                     [items]="filterItems"></tui-filter>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="p-3">
-        <div class="text-sub text-500 mb-1 flex gap-2 items-center">
+        <div class="text-sub font-medium mb-1 flex gap-2 items-center">
           <div>Available contexts:</div>
           <tui-loader *ngIf="vm.status === 'SilentLoading'"
                       [showLoader]="true"

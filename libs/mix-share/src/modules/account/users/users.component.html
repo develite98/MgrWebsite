@@ -31,7 +31,7 @@
              mixTableColumn>
           <ng-template let-data
                        mixColumnCell>
-            <div class="text-600 cursor-pointer"
+            <div class="font-semibold cursor-pointer"
                  (click)="editUser(data)">
               <div class="flex items-center">
                 <div class="user-avatar">
@@ -41,11 +41,8 @@
                     ">
                 </div>
 
-                <div class="ms-3">
+                <div class="ms-3 font-medium">
                   <div>{{ getNameFromMail(data.userName || '') }}</div>
-                  <div class="text-s text-secondary">
-                    {{ data?.id }}
-                  </div>
                 </div>
               </div>
             </div>

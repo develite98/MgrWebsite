@@ -1,5 +1,29 @@
+@media only screen and (min-width: 2560px) {
+  html {
+    font-size: 20px !important;
+  }
+}
+
+@media only screen and (min-width: 2240px) {
+  html {
+    font-size: 18px !important;
+  }
+}
+
+@media only screen and (max-width: 1990px) {
+  html {
+    font-size: 16px !important;
+  }
+}
+
 @media only screen and (max-width: 1660px) {
-  body {
-    font-size: var(--text-size-s) !important;
+  html {
+    font-size: 14px !important;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  html {
+    font-size: 12px !important;
   }
 }

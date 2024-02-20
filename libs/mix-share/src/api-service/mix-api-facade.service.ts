@@ -11,13 +11,13 @@ import {
   MixTemplate,
 } from '@mixcore/lib/model';
 import { MixSwagger } from '@mixcore/lib/swagger';
+import { MixApplicationApi } from './application-api.service';
 import { DashboardApiService } from './dashboard-api.service';
 import { MixDatabaseApi } from './database-api.service';
 import { MetadataService } from './metadata-api.service';
 import { MixAccountApi } from './mix-account-api';
 import { MixRestfulApi } from './mix-crud-api.service';
 import { MixDatabaseRelationApi } from './mix-database-relation-api.service';
-import { MixeCommerce } from './mix-ecommerce-api.service';
 import { MixModuleDataApi } from './mix-module-data-api.service';
 import { MixPostApi } from './mix-post-api.service';
 import { MixPostToPostApi } from './mix-post-post-api.service';
@@ -118,8 +118,8 @@ export class MixApiFacadeService {
   // Sync Api
   public syncApi = new MixSyncApi();
 
-  // ECommerce Api
-  public eCommerce = new MixeCommerce();
+  // App Api
+  public globalAppApi = new MixApplicationApi();
 }
 
 export function uploadFileFn(mixApi: MixApiFacadeService) {

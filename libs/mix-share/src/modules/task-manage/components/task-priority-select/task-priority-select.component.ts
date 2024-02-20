@@ -1,13 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms';
 import { TaskPriority, TaskPriorityIcon } from '@mixcore/lib/model';
 import { BaseTextControl } from '@mixcore/ui/base-control';
-import {
-  TuiDataListModule,
-  TuiTextfieldControllerModule,
-} from '@taiga-ui/core';
-import { TuiSelectModule } from '@taiga-ui/kit';
+import { MixSelectComponent } from '@mixcore/ui/select';
 import { TaskPriorityComponent } from '../task-priority/task-priority.component';
 
 @Component({
@@ -15,14 +11,13 @@ import { TaskPriorityComponent } from '../task-priority/task-priority.component'
   standalone: true,
   imports: [
     CommonModule,
-    TuiSelectModule,
-    TuiDataListModule,
-    TuiTextfieldControllerModule,
     ReactiveFormsModule,
     TaskPriorityComponent,
+    MixSelectComponent,
   ],
   templateUrl: './task-priority-select.component.html',
   styleUrls: ['./task-priority-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskPrioritySelectComponent
   extends BaseTextControl
@@ -30,7 +25,7 @@ export class TaskPrioritySelectComponent
 {
   @Input() public size: 'm' | 's' | 'l' = 'm';
   public Icon = TaskPriorityIcon;
-  public prorityItems = [
+  public priorityItems = [
     TaskPriority.LOWEST,
     TaskPriority.LOW,
     TaskPriority.MEDIUM,

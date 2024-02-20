@@ -4,11 +4,9 @@
   height: 100%;
 
   &__tree {
-    width: 255px;
+    width: 15.5rem;
     height: 100%;
     background-color: var(--background-color-primary);
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
     overflow: auto;
   }
 }

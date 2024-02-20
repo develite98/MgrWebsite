@@ -4,26 +4,36 @@ import {
   MixFilter,
   MixTaskNew,
   PaginationRequestModel,
+  TaskStatistic,
   TaskStatus,
 } from '@mixcore/lib/model';
 import { BaseCRUDStore } from '@mixcore/share/base';
 import { ObjectUtil } from '@mixcore/share/form';
 import * as R from 'remeda';
 import { combineLatest, map, switchMap, tap } from 'rxjs';
+import { DatabaseName } from '../const/database-name';
 import { TaskManageStore } from './task-ui.store';
 
 @Injectable({ providedIn: 'root' })
 export class TaskStore extends BaseCRUDStore<MixTaskNew> {
   public taskUiStore = inject(TaskManageStore);
+  public status$$ = toSignal(this.select((s) => s.status));
 
   public state$$ = toSignal(
     combineLatest([this.request$$, this.taskUiStore.selectedProjectId$]).pipe(
       tap(([request, projectId]) => {
-        request['projectId'] = projectId;
+        request['compareType'] = 'or';
+        request['filterType'] = 'contain';
+        request.orderBy = 'CreatedDateTime';
+        request.searchMethod = 'Like';
+        request.status = 'Published';
+        request.direction = 'Desc';
+        request.mixDatabaseName = DatabaseName.mixProject;
+        request['isGroup'] = false;
         request.queries = <MixFilter[]>[
           {
             value: projectId,
-            fieldName: 'projectId',
+            fieldName: 'mixProjectId',
             compareOperator: 'Equal',
           },
         ];
@@ -62,6 +72,25 @@ export class TaskStore extends BaseCRUDStore<MixTaskNew> {
     );
   };
 
+  public getTaskByParentTaskId = (id: number) => {
+    return this.select((s) => s).pipe(
+      map((x) => x.data.filter((t) => t.parentTaskId === id))
+    );
+  };
+
+  public calculateTaskInfo = (id: number) => {
+    return this.select((s) => s).pipe(
+      map((x) => x.data.filter((t) => t.parentTaskId === id)),
+      map((childTask) => {
+        return <TaskStatistic>{
+          done: childTask.filter((x) => x.taskStatus === TaskStatus.DONE)
+            .length,
+          total: childTask.length,
+        };
+      })
+    );
+  };
+
   public addTask = (task: MixTaskNew, mode: 'Update' | 'Create' = 'Create') => {
     const currentData = this.get().data;
     if (mode === 'Create') {
@@ -75,9 +104,17 @@ export class TaskStore extends BaseCRUDStore<MixTaskNew> {
     this.reUpdateCache();
   };
 
+  public deleteTask = (task: MixTaskNew) => {
+    let currentData = this.get().data;
+    currentData = currentData.filter((x) => x.id !== task.id);
+
+    this.patchState({ data: R.clone(currentData) });
+    this.reUpdateCache();
+  };
+
   public override requestFn = (request: PaginationRequestModel) =>
     this.mixApi.databaseApi
-      .getDataByName<MixTaskNew>('mixDb_mixTask', request)
+      .getDataByName<MixTaskNew>(DatabaseName.mixTask, request)
       .pipe(
         map((result) => {
           result.items = result.items.map((i) => new MixTaskNew(i));
@@ -86,7 +123,7 @@ export class TaskStore extends BaseCRUDStore<MixTaskNew> {
         })
       );
 
-  public override requestName = 'mixTask';
+  public override requestName = DatabaseName.mixTask;
   public override searchColumns = ['Title', 'Description'];
   public override searchColumnsDict: { [key: string]: string } = {
     Title: 'title',

@@ -55,6 +55,7 @@ import { debounceTime } from 'rxjs';
 })
 export class EntityFormComponent implements OnInit {
   @Input({ required: true }) entity!: MixColumn;
+  @Input() end = false;
   @Output() entityChange = new EventEmitter<MixColumn>();
   @Output() deleteEntity = new EventEmitter<MixColumn>();
 
@@ -66,7 +67,7 @@ export class EntityFormComponent implements OnInit {
       label: 'Text',
       id: 'text',
       types: [
-        DataTypeDisplay.Text,
+        DataTypeDisplay.String,
         DataTypeDisplay.MultilineText,
         DataTypeDisplay.Html,
         DataTypeDisplay.Color,
@@ -126,7 +127,8 @@ export class EntityFormComponent implements OnInit {
   public getDisplay(form: Partial<{ dataType: string | null }>) {
     if (!form.dataType) return 'Choose data type';
 
-    return DataTypeDisplay[form.dataType as DataType].name;
+    const typeDict = DataTypeDisplay[form.dataType as DataType];
+    return typeDict ? typeDict.name : form.dataType;
   }
 
   public form = new FormGroup({

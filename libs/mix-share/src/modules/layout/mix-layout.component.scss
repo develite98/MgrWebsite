@@ -1,16 +1,29 @@
 .main-layout {
   position: relative;
-  --sidebar-reserved-width: 320px;
+  --sidebar-reserved-width: 18rem;
   grid-template-columns: var(--sidebar-reserved-width) 1fr;
   grid-template-areas: 'sidebar canvas';
   display: grid;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+
+  &__expand-btn {
+    display: block;
+    position: fixed;
+    top: 1.125rem;
+    left: 15rem;
+    z-index: 30;
+    transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+
+    &.--collapse {
+      left: 78px;
+      transform: rotate(-180deg);
+    }
+  }
 
   &__progress {
     top: 0;
     width: 100%;
     position: absolute;
-    z-index: 4;
   }
 
   &.--collapse {
@@ -19,12 +32,11 @@
 
   #sidebar {
     contain: strict;
-    background-color: #eaf0f3;
   }
 
-  .shadow {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px,
-      rgba(0, 0, 0, 0.06) -4px 4px 8px 0px;
+  #canvas {
+    box-shadow: var(--shadow-200);
+    background-color: var(--background-color-primary);
   }
 }
 

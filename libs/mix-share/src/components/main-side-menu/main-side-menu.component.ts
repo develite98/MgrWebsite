@@ -9,7 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MenuItem } from '@mixcore/lib/model';
+import { GroupMenuItem, MenuItem } from '@mixcore/lib/model';
 import { fadeInExpandOnEnterAnimation } from '@mixcore/share/animation';
 import { AuthService } from '@mixcore/share/auth';
 import { MixIconButtonComponent } from '@mixcore/ui/icon-button';
@@ -22,7 +22,6 @@ import {
   TuiDropdownModule,
   TuiHostedDropdownModule,
 } from '@taiga-ui/core';
-import { CollapseBtnComponent } from './collapse-btn.component';
 
 @Component({
   selector: 'mix-main-side-menu',
@@ -35,7 +34,6 @@ import { CollapseBtnComponent } from './collapse-btn.component';
     TuiDataListModule,
     TuiHostedDropdownModule,
     TuiDropdownModule,
-    CollapseBtnComponent,
   ],
   templateUrl: './main-side-menu.component.html',
   styleUrls: ['./main-side-menu.component.scss'],
@@ -48,6 +46,7 @@ export class MainSideMenuComponent {
   public authService = inject(AuthService);
   public dialogService = inject(DialogService);
   public modal = inject(ModalService);
+  public router = inject(Router);
 
   @Input() public showDetail = true;
   @Input() public menu: MenuItem[] = this.authService.portalMenu;
@@ -55,11 +54,27 @@ export class MainSideMenuComponent {
 
   public selectedMenu: MenuItem | undefined = undefined;
   public selectedMenus: Record<string, MenuItem | undefined> = {};
+  public groupMenu: GroupMenuItem[] = [];
 
   constructor(public route: Router) {}
 
   ngOnInit() {
     this.selectedMenu = this.menu.find((x) => x.default);
+    this.groupMenu = this.menu.reduce((acc, menuItem) => {
+      const group = menuItem.group || 'base';
+      const existingGroup = acc.find((groupItem) => groupItem.group === group);
+
+      if (existingGroup) {
+        existingGroup.items.push(menuItem);
+      } else {
+        acc.push({
+          group,
+          items: [menuItem],
+        });
+      }
+
+      return acc;
+    }, [] as GroupMenuItem[]);
   }
 
   @tuiPure
@@ -67,7 +82,7 @@ export class MainSideMenuComponent {
     return item.title === selectedMenu?.title;
   }
 
-  public onMenuSelect(menu: MenuItem) {
+  public onMenuSelect(menu: MenuItem, isParent = true) {
     if (menu.isDevelopment) {
       this.showDevelopment();
       return;
@@ -75,7 +90,7 @@ export class MainSideMenuComponent {
 
     if (!menu.children?.length) {
       this.route.navigateByUrl(menu.url);
-      this.selectedMenu = menu;
+      if (isParent) this.selectedMenu = menu;
 
       return;
     }
@@ -100,5 +115,15 @@ export class MainSideMenuComponent {
   public toggleMenu(): void {
     this.showDetail = !this.showDetail;
     if (!this.showDetail) this.selectedMenus = {};
+  }
+
+  public logout(): void {
+    this.modal.confirm('Do you want to logout ?').subscribe((ok) => {
+      if (!ok) return;
+
+      this.authService.logout(() => {
+        this.router.navigateByUrl('auth/login');
+      });
+    });
   }
 }

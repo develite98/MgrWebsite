@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MixDynamicData, MixTaskNew } from '@mixcore/lib/model';
 import { MixApiFacadeService } from '@mixcore/share/api';
+import { DatabaseName } from '../const/database-name';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -8,9 +9,13 @@ export class TaskService {
 
   public saveTask(task: MixTaskNew) {
     return this.mixApi.databaseApi.saveData(
-      'mixDb_mixTask',
+      DatabaseName.mixTask,
       task.id ?? -1,
       task as unknown as MixDynamicData
     );
+  }
+
+  public deleteTask(task: MixTaskNew) {
+    return this.mixApi.databaseApi.deleteData(DatabaseName.mixTask, task.id);
   }
 }

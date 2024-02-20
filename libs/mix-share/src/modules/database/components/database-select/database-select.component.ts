@@ -47,6 +47,7 @@ export class DatabaseSelectComponent {
   @Input() public selectedItemId?: number;
   @Input() public selectedItemName?: string;
   @Output() public selectedItemChange = new EventEmitter<MixDatabase>();
+  @Output() public onCreate = new EventEmitter();
 
   constructor() {
     effect(
@@ -71,6 +72,6 @@ export class DatabaseSelectComponent {
     this.isCreate = true;
     this.selectedItemId = undefined;
 
-    this.router.navigateByUrl(this.createUrl);
+    this.onCreate.emit();
   }
 }

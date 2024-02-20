@@ -14,9 +14,11 @@ import { MixButtonComponent } from '@mixcore/ui/button';
 import { DynamicFilterComponent } from '@mixcore/ui/filter';
 import { ModalService } from '@mixcore/ui/modal';
 import { MixDataTableModule, TableContextMenu } from '@mixcore/ui/table';
+import { DialogService } from '@ngneat/dialog';
 import { HotToastService } from '@ngneat/hot-toast';
 import { tuiPure } from '@taiga-ui/cdk';
 import { forkJoin } from 'rxjs';
+import { DatabaseDetailModalComponent } from '../components/database-detail-modal/database-detail-modal.component';
 import { DatabaseRelationshipComponent } from '../components/database-relationship/database-relationship.component';
 import { DbContextSelectComponent } from '../components/db-context-select/db-context-select.component';
 import { MasterDbStore } from '../store/master-db.store';
@@ -34,6 +36,7 @@ import { MasterDbStore } from '../store/master-db.store';
     DynamicFilterComponent,
     DatabaseRelationshipComponent,
     DbContextSelectComponent,
+    DatabaseDetailModalComponent,
   ],
   templateUrl: './database.component.html',
   styleUrls: ['./database.component.scss'],
@@ -46,6 +49,7 @@ export class DatabaseComponent {
   public toast = inject(HotToastService);
   public masterStore = inject(MasterDbStore);
   public activeRoute = inject(ActivatedRoute);
+  public dialog = inject(DialogService);
 
   public selectedDbContextId?: number;
   public selectedTable: MixDatabase[] = [];
@@ -58,14 +62,7 @@ export class DatabaseComponent {
       },
     },
     {
-      label: `Setting Db's Columns`,
-      icon: 'construction',
-      action: (item) => {
-        this.goDetail(item.id);
-      },
-    },
-    {
-      label: 'View table data',
+      label: 'View Db data',
       icon: 'database',
       action: (item) => {
         this.goDatabaseData(item.systemName);
@@ -112,7 +109,16 @@ export class DatabaseComponent {
   }
 
   public goDetail(id: number) {
-    this.router.navigate([...this.currentRouteSegments, id]);
+    this.dialog.open(DatabaseDetailModalComponent, {
+      ...DatabaseDetailModalComponent.dialogOption,
+      data: {
+        id: id,
+        baseSegment: this.currentRouteSegments,
+      },
+    });
+
+    // DEPRECATED: Remove
+    // this.router.navigate([...this.currentRouteSegments, id]);
   }
 
   public goDatabaseData(sysName: string) {
@@ -120,7 +126,16 @@ export class DatabaseComponent {
   }
 
   public createDatabase() {
-    this.router.navigate([...this.currentRouteSegments, 'create']);
+    this.dialog.open(DatabaseDetailModalComponent, {
+      ...DatabaseDetailModalComponent.dialogOption,
+      data: {
+        id: 'create',
+        baseSegment: this.currentRouteSegments,
+      },
+    });
+
+    // DEPRECATED: Remove
+    // this.router.navigate([...this.currentRouteSegments, 'create']);
   }
 
   public onDeleteTable() {

@@ -22,7 +22,7 @@
                      [userInfo]="userInfo"></mix-user-avatar>
 
     <div>
-      <div class="text-bold text-xxl">
+      <div class="font-bold text-xxl">
         {{ userInfo?.userName }}
       </div>
       <div class="text-sub text-l">
@@ -31,13 +31,10 @@
     </div>
   </div>
 
-  <div class="line-break"></div>
-
   <!-- Open when applications ready -->
   <!-- <mix-application-list></mix-application-list> -->
-
   <div class="main-menu">
-    <div class="mix-menu-item"
+    <!-- <div class="mix-menu-item"
          (click)="hide(); userProfile()">
       <span class="mix-icon me-3">manage_accounts</span> {{ 'Managed Account' }}
     </div>
@@ -47,9 +44,9 @@
     <div class="mix-menu-item"
          (click)="hide()">
       <span class="mix-icon me-3">settings</span> {{ 'Settings' }}
-    </div>
+    </div> -->
 
-    <div class="line-break"></div>
+    <!-- <div class="line-break"></div> -->
 
     <div class="mix-menu-item"
          (click)="logout(); hide()">

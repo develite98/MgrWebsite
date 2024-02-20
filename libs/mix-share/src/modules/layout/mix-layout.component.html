@@ -1,6 +1,6 @@
 <div class="w-screen h-screen main-layout"
      [class.--collapse]="!expand()">
-  <div class="main-layout__progress"
+  <div class="main-layout__progress z-20"
        [ngClass]="{'hidden': !showProgress()}">
     <progress class="progress"
               tuiProgressBar
@@ -9,12 +9,16 @@
               style="height: 3px"></progress>
   </div>
 
+  <collapse-btn class="main-layout__expand-btn"
+                [class.--collapse]="!expand()"
+                (click)="onExpandChange()"></collapse-btn>
+
   <aside id="sidebar">
     <mix-main-side-menu [showDetail]="expand()"
                         (expandChange)="onExpandChange()"></mix-main-side-menu>
   </aside>
 
-  <main class="shadow flex flex-col h-full overflow-auto rounded-none md:rounded-tl-xl md:rounded-bl-xl"
+  <main class="z-10 flex flex-col h-full overflow-auto rounded-none md:rounded-tl-xl md:rounded-bl-xl"
         id="canvas">
     <mix-main-toolbar [showExpandBtn]="!expand()"
                       (expandChange)="onExpandChange()"></mix-main-toolbar>

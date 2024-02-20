@@ -117,7 +117,7 @@
           @for (item of months; track item) {
           <div class="mix-menu-item flex justify-between"
                (click)="cronData.month = item; cronDataChanged(); hide()">
-            <div class="text-500">{{item}}</div>
+            <div class="font-medium">{{item}}</div>
           </div>
           }
         </div>
@@ -142,7 +142,7 @@
           @for (item of dows; track item) {
           <div class="mix-menu-item flex justify-between"
                (click)="cronData.weekday = item; cronDataChanged(); hide()">
-            <div class="text-500">{{item}}</div>
+            <div class="font-medium">{{item}}</div>
           </div>
           }
         </div>

@@ -1,5 +1,11 @@
-<tui-avatar [autoColor]="true"
-            [rounded]="true"
-            [size]="size"
-            [text]="userInfo.userName || userInfo.email || ''"
-            [tp]="userInfo.userName || userInfo.email || ''"></tui-avatar>
+<div class="flex gap-2 items-center w-full">
+  <tui-avatar [autoColor]="true"
+              [rounded]="true"
+              [size]="size"
+              [text]="userInfo.userName || userInfo.email || ''"
+              [tp]="userInfo.userName || userInfo.email || ''"></tui-avatar>
+
+  @if (showName) {
+  <span class="grow  truncate"> {{userInfo.userName}} </span>
+  }
+</div>

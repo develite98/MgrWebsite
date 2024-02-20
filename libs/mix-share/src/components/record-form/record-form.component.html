@@ -4,18 +4,61 @@
     <default-skeleton></default-skeleton>
   </div>
   } @else {
-  <div class="mix-dialog__header">
-    {{ mode === 'create' ? 'Create' : 'Update' }} record from
-    {{ ref.data.mixDatabase.displayName }}
+  <div class="mix-dialog__header flex items-end">
+    <div> {{ mode === 'create' ? 'Create' : 'Update' }} record
+    </div>
+
+    <div *ngIf="historyItems.length > 1"
+         class="ml-4">
+      <mix-breadcrumbs [showHome]="false"
+                       (itemClick)="onBreadcrumbClick($event)">
+        @for (item of historyItems; track item) {
+        <div name="Home"
+             [templateRef]="tpl"
+             icon="database"
+             mixBreadcrumbItem>
+          <ng-template #tpl>
+            {{ item.db.displayName }} #{{item.data?.id || 0}}
+          </ng-template>
+        </div>
+        }
+      </mix-breadcrumbs>
+    </div>
   </div>
 
   <div class="mix-dialog__content">
+    <div class="mb-2 text-base text-gray-400 rcf-title">Main Information</div>
     <form [formGroup]="form">
       <formly-form *ngIf="fields.length"
                    [fields]="fields"
                    [form]="form"
                    [model]="modelData"></formly-form>
     </form>
+
+    <div class="mt-8 text-base text-gray-400 rcf-title">Relations Data</div>
+    @if (mode === 'update') {
+    <div *ngIf="activeItem | async as active">
+      @for (item of active?.db?.relationships || []; track item) {
+      <div class="mb-3 relation-data-container">
+        <span class="ml-2 text-xl font-medium relation-data-name">{{item.destinateDatabaseName | titlecase}}</span>
+        <mix-dynamic-db-list [dbSysName]="item.destinateDatabaseName"
+                             [parentId]="active.data!.id"
+                             [parentName]="item.sourceDatabaseName"
+                             [type]="'inline'"
+                             (editDataChange)="onEditChildData($event)"></mix-dynamic-db-list>
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="flex bg-yellow-100 rounded-lg p-4 mb-4 text-sm text-yellow-700"
+         role="alert">
+      <div>
+        Create your data first to manage relationships.
+      </div>
+    </div>
+    }
+
+
   </div>
 
   <div class="mix-dialog__footer">
@@ -23,6 +66,7 @@
                 type="outline"
                 (click)="ref.close()"
                 size="m">
+      <span class="mix-icon">arrow_back</span>
       Cancel
     </mix-button>
 

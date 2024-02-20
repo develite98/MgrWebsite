@@ -3,10 +3,10 @@
   <div class="mix-dialog__header">Create Database Context</div>
 
   <div class="mix-dialog__content">
-    <div class="text-sub mb-1 text-500">Name</div>
+    <div class="text-sub mb-1 font-medium">Name</div>
     <mix-input formControlName="displayName"></mix-input>
 
-    <div class="text-sub mt-3 mb-1 text-500">System Name</div>
+    <div class="text-sub mt-3 mb-1 font-medium">System Name</div>
     <div class="flex gap-1">
       <mix-input formControlName="systemName"></mix-input>
       <mix-button type="outline"
@@ -15,16 +15,22 @@
                   size="m"><span class="mix-icon">refresh</span></mix-button>
     </div>
 
-    <div class="text-sub mt-3 mb-1 text-500">Schema</div>
+    <div class="text-sub mt-3 mb-1 font-medium">Schema</div>
     <mix-input formControlName="schema"></mix-input>
 
-    <div class="text-sub mt-3 mb-1 text-500">Database Provider</div>
+    <div class="text-sub mt-3 mb-1 font-medium">Naming Convention</div>
+    <mix-select [items]="namingConventions"
+                [labelProcess]="namingConventionLabel"
+                formControlName="namingConvention"></mix-select>
+
+    <div class="text-sub mt-3 mb-1 font-medium">Database Provider</div>
     <mix-select [items]="dbProviders"
                 [labelProcess]="dbProviderLabel"
                 formControlName="databaseProvider"></mix-select>
 
-    <div class="text-sub mt-3 mb-1 text-500">Connection String</div>
-    <mix-text-area formControlName="connectionString"></mix-text-area>
+    <div class="text-sub mt-3 mb-1 font-medium">Connection String</div>
+    <mix-text-area placeHolder="Host=192.158.1.127;Database=[databaseName];Username=[userName];Password=[passWord]"
+                   formControlName="connectionString"></mix-text-area>
   </div>
 
   <div class="mix-dialog__footer">

@@ -1,13 +1,18 @@
-<div class="button-link"
-     [tp]="dateSelect"
-     [tpClassName]="'task-start-end-date'"
-     [tpIsLazy]="true"
-     [tpOffset]="[-10, 5]"
-     tpVariation="popper"
-     tpPlacement="bottom-start">
+<span class="button-link w-full"
+      [tp]="dateSelect"
+      [tpClassName]="'task-start-end-date'"
+      [tpIsLazy]="true"
+      [tpOffset]="[-10, -5]"
+      tpVariation="popper"
+      tpPlacement="bottom-start">
   <span class="mix-icon">alarm</span>
-  <span>Date</span>
-</div>
+
+  @if (value?.to) {
+  <span>{{value?.to}}</span>
+  } @else {
+  <span>Choose a date</span>
+  }
+</span>
 
 <ng-template #dateSelect
              let-hide>

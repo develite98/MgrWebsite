@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-export const SchedulerRoute: Routes = [
+export const schedulerRoutes: Routes = [
   {
     path: 'schedulers',
     loadComponent: () =>

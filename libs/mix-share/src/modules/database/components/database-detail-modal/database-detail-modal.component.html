@@ -1,0 +1,199 @@
+<div class="mix-dialog --default-padding"
+     [formGroup]="form">
+  @if (loadingState() === 'Loading') {
+  <div class="w-full h-full">
+    <div class="p-10">
+      <content-loader [backgroundColor]="'#f3f3f3'"
+                      [foregroundColor]="'#ecebeb'"
+                      [viewBox]="'0 0 940 300'">
+        <svg:rect x="0"
+                  y="0"
+                  rx="3"
+                  ry="3"
+                  width="627"
+                  height="24"></svg:rect>
+        <svg:rect x="0"
+                  y="29"
+                  rx="3"
+                  ry="3"
+                  width="506"
+                  height="24"></svg:rect>
+        <svg:rect x="0"
+                  y="77"
+                  rx="3"
+                  ry="3"
+                  width="590"
+                  height="16"></svg:rect>
+        <svg:rect x="0"
+                  y="100"
+                  rx="3"
+                  ry="3"
+                  width="627"
+                  height="16"></svg:rect>
+        <svg:rect x="0"
+                  y="123"
+                  rx="3"
+                  ry="3"
+                  width="480"
+                  height="16"></svg:rect>
+        <svg:rect x="0"
+                  y="187"
+                  rx="3"
+                  ry="3"
+                  width="370"
+                  height="16"></svg:rect>
+        <svg:circle cx="18"
+                    cy="239"
+                    r="18"></svg:circle>
+        <svg:rect x="46"
+                  y="217"
+                  rx="3"
+                  ry="3"
+                  width="548"
+                  height="42"></svg:rect>
+        <svg:rect x="683"
+                  y="3"
+                  rx="3"
+                  ry="3"
+                  width="135"
+                  height="14"></svg:rect>
+        <svg:rect x="683"
+                  y="33"
+                  rx="3"
+                  ry="3"
+                  width="251"
+                  height="24"></svg:rect>
+        <svg:rect x="683"
+                  y="90"
+                  rx="3"
+                  ry="3"
+                  width="135"
+                  height="14"></svg:rect>
+        <svg:rect x="683"
+                  y="120"
+                  rx="3"
+                  ry="3"
+                  width="251"
+                  height="24"></svg:rect>
+        <svg:rect x="683"
+                  y="177"
+                  rx="3"
+                  ry="3"
+                  width="135"
+                  height="14"></svg:rect>
+        <svg:rect x="683"
+                  y="207"
+                  rx="3"
+                  ry="3"
+                  width="251"
+                  height="24"></svg:rect>
+      </content-loader>
+    </div>
+
+  </div>
+  } @else {
+  <div class="mix-dialog__header !pb-0">
+    <div class="flex items-center gap-1">
+      <mix-inline-input [placeHolder]="'Type your db name'"
+                        formControlName="displayName"></mix-inline-input>
+      @if (mode === 'create') {
+      <div class="text-s text-sub">inside</div>
+      <mix-db-context-select class="ms-2"
+                             [ignoreItemAll]="true"
+                             [selectedItemId]="form.value.mixDatabaseContextId"
+                             (selectedItemChange)="updateDbContext($event.id)"></mix-db-context-select>
+      }
+    </div>
+  </div>
+
+  <div class="mix-dialog__content">
+    <nav [(activeItemIndex)]="activeTabIndex"
+         tuiTabs>
+      <button tuiTab>
+        <span class="mix-icon mr-2"> feed </span> General
+      </button>
+      <button tuiTab>
+        <span class="mix-icon mr-2"> share </span> Relationships
+      </button>
+      <button tuiTab>
+        <span class="mix-icon mr-2"> key </span> Permissions
+      </button>
+      <button tuiTab>
+        <span class="mix-icon mr-2"> rule_settings </span> Migrations
+      </button>
+    </nav>
+
+    <!-- Main Content -->
+    @defer(when activeTabIndex === 0) {
+    <div class="data-detail-page__main-content sm:container"
+         [class.hidden]="activeTabIndex !== 0">
+      <mix-database-info [form]="form"></mix-database-info>
+
+      <div class="mt-4 font-medium text-xl">
+        Columns
+      </div>
+      <mix-database-entity [columns]="data?.columns ?? []"
+                           (columnsChange)="onColumnsChange($event)"></mix-database-entity>
+    </div>
+    } @loading (after 100ms; minimum 1s) {
+    <default-skeleton></default-skeleton>
+    }
+
+
+    <!-- Relationships -->
+    @defer(when activeTabIndex === 1) {
+    <div class="data-detail-page__main-content sm:container"
+         [class.hidden]="activeTabIndex !== 1">
+      <mix-database-relationship [relationships]="data?.relationships ?? []"
+                                 (deleteRelation)="onDeleteRelationship($event)"
+                                 (relationshipChanges)="onRelationshipChange($event)"></mix-database-relationship>
+    </div>
+    } @loading (after 100ms; minimum 1s) {
+    <default-skeleton></default-skeleton>
+
+    }
+
+    <!-- Permissions -->
+    @defer(when activeTabIndex === 2) {
+    <div class="data-detail-page__main-content sm:container"
+         [class.hidden]="activeTabIndex !== 2">
+      <mix-database-permission [form]="form"></mix-database-permission>
+    </div>
+    } @loading (after 100ms; minimum 1s) {
+    <default-skeleton></default-skeleton>
+
+    }
+
+    <!-- Migrations -->
+    @defer(when activeTabIndex === 3) {
+    <div class="data-detail-page__main-content sm:container"
+         [class.hidden]="activeTabIndex !== 3">
+      <mix-database-migration [dbSysName]="data?.systemName"></mix-database-migration>
+    </div>
+    } @loading (after 100ms; minimum 1s) {
+    <default-skeleton></default-skeleton>
+    }
+  </div>
+
+  <div class="mix-dialog__footer">
+    <mix-button class="mr-auto"
+                type="secondary"
+                (click)="dialogRef.close()">Close</mix-button>
+
+    <mix-button *ngIf="mode === 'update' && data"
+                class="ml-auto"
+                type="secondary"
+                (click)="goDatabaseData(data.systemName)">
+      View data source
+      <span class="mix-icon"> arrow_right_alt </span>
+    </mix-button>
+
+    <mix-button class="ms-2"
+                (click)="submit()">
+      <span class="icon mix-icon"> save_as </span>
+      {{ mode === 'create' ? 'Create' : 'Save Data' }}
+    </mix-button>
+  </div>
+  }
+
+</div>

@@ -1,16 +1,3 @@
-<tui-select [formControl]="control"
-            [tuiTextfieldLabelOutside]="true"
-            [tuiTextfieldSize]="size"
-            [valueContent]="cardContent">
-  <tui-data-list *tuiDataList>
-    <button *ngFor="let item of prorityItems"
-            [value]="item"
-            tuiOption>
-      <ng-container *ngTemplateOutlet="cardContent; context: { $implicit: item }"></ng-container>
-    </button>
-  </tui-data-list>
-</tui-select>
-
 <ng-template #cardContent
              let-item>
   <div class="flex items-center gap-2">
@@ -18,3 +5,7 @@
     <span> {{ item }}</span>
   </div>
 </ng-template>
+
+<mix-select [formControl]="control"
+            [items]="priorityItems"
+            [templateRef]="cardContent"></mix-select>

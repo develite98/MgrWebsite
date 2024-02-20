@@ -9,8 +9,8 @@
   &__title {
     --color: green;
 
-    border-left: 7px solid var(--color);
-    padding: 12px;
+    // border-left: 7px solid var(--color);
+    padding: 1rem;
     padding-top: 8px;
 
     .item {
@@ -25,10 +25,10 @@
     border-style: solid;
     border-color: rgba(234, 234, 234, 1);
     border-color: rgb(234, 234, 234);
-    padding: 8px 14px;
+    padding: 8px 1rem;
 
     .label {
-      width: 60px;
+      width: 55px;
     }
 
     .item {
@@ -36,14 +36,15 @@
     }
   }
 
-  &__body,
-  &__loading {
-    padding: 8px 14px;
-  }
-
   &__body {
+    padding: 8px 1rem;
+
     .label {
       border-bottom: 1px solid var(--border-color-default);
     }
+  }
+
+  &__delete {
+    right: 44px !important;
   }
 }

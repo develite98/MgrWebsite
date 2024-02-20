@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms';
 import { TaskType, TaskTypeIcons } from '@mixcore/lib/model';
 import { BaseTextControl } from '@mixcore/ui/base-control';
+import { MixSelectComponent } from '@mixcore/ui/select';
 import {
   TuiDataListModule,
   TuiTextfieldControllerModule,
@@ -18,6 +19,7 @@ import { TuiSelectModule } from '@taiga-ui/kit';
     TuiDataListModule,
     TuiTextfieldControllerModule,
     ReactiveFormsModule,
+    MixSelectComponent,
   ],
   templateUrl: './task-type-select.component.html',
   styleUrls: ['./task-type-select.component.scss'],

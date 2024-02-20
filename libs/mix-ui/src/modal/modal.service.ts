@@ -62,7 +62,9 @@ export class ModalService extends AbstractTuiDialogService<
       borderShadowColor: this.modalShadowColor.info,
       buttons: ['Ok', ''],
       dismissible: closeable,
+      closeable: closeable,
     };
+
     return this.open(message, options);
   }
 

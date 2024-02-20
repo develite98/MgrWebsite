@@ -1,8 +1,8 @@
 .inline-input {
   display: flex;
   align-items: center;
-  font-size: 18px;
   font-weight: 500;
+  height: 40px;
 
   &.--empty {
     opacity: 0.6;

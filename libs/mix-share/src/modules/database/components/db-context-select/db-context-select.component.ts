@@ -18,6 +18,7 @@ import {
 import { TippyDirective } from '@ngneat/helipopper';
 import { tuiPure } from '@taiga-ui/cdk';
 import { DatabaseContextStore } from '../../store/db-context.store';
+import { DbUiStore } from '../../store/db-ui.store';
 
 @Component({
   selector: 'mix-db-context-select',
@@ -29,6 +30,8 @@ import { DatabaseContextStore } from '../../store/db-context.store';
 })
 export class DbContextSelectComponent {
   public store = inject(DatabaseContextStore);
+  public uiStore = inject(DbUiStore);
+
   public contexts = signal<MixDbContext[]>([]);
   public destroy$ = inject(DestroyRef);
   public defaultContext = [
@@ -43,7 +46,7 @@ export class DbContextSelectComponent {
 
   @tuiPure
   public getLabelSize(size: 's' | 'm') {
-    return size === 's' ? 'text-s' : 'text-xl';
+    return size === 's' ? 'text-2xl' : 'text-2xl';
   }
 
   @Input() public size: 's' | 'm' = 'm';
@@ -59,11 +62,13 @@ export class DbContextSelectComponent {
         );
       }
       this.contexts.set([...this.defaultContext, ...vm.data]);
-
-      if (!this.selectedItemId) {
-        this.selectItem(this.contexts()[0]);
-      }
     });
+
+    this.uiStore.selectedContextId$
+      .pipe(takeUntilDestroyed(this.destroy$))
+      .subscribe((id) => {
+        this.selectedItemId = id;
+      });
   }
 
   @tuiPure

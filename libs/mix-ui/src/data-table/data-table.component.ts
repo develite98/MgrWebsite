@@ -19,7 +19,7 @@ import { FormControl } from '@angular/forms';
 import { fadeInRightOnEnterAnimation } from '@mixcore/share/animation';
 import { ObjectUtil } from '@mixcore/share/form';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-import { debounceTime, takeUntil } from 'rxjs';
+import { debounceTime, startWith, takeUntil } from 'rxjs';
 import { TableColumnDirective } from './directives/column.directive';
 
 export interface TableContextMenu<T> {
@@ -54,7 +54,9 @@ export class DataTableComponent<T> implements AfterContentInit {
     searchField: string[];
   }> = new EventEmitter();
 
-  @Input() public searchPlaceholder = 'Type to find';
+  @Input() public showSearch = true;
+  @Input() public viewMode = signal<'table' | 'card'>('table');
+  @Input() public searchPlaceholder = 'Type to search';
   @Input() public selectedItem: T | undefined = undefined;
   @Input() public enableDnd = false;
   @Input() public searchTextValue = '';
@@ -114,15 +116,21 @@ export class DataTableComponent<T> implements AfterContentInit {
   private _searchFieldOptions: string[] = [];
 
   public ngAfterContentInit(): void {
-    this.displayColumns = this.columns
-      .toArray()
-      .filter((x) => x.columnType !== 'CHECKBOX' && x.columnType !== 'ACTION');
+    this.columns.changes
+      .pipe(takeUntil(this.destroy$), startWith(this.columns))
+      .subscribe((col) => {
+        this.displayColumns = this.columns
+          .toArray()
+          .filter(
+            (x) => x.columnType !== 'CHECKBOX' && x.columnType !== 'ACTION'
+          );
 
-    this.tableColumns = this.displayColumns.map(
-      (c: TableColumnDirective) => c.key
-    );
+        this.tableColumns = this.displayColumns.map(
+          (c: TableColumnDirective) => c.key
+        );
 
-    this.tableColumns.push('MENU');
+        this.tableColumns.push('MENU');
+      });
 
     this.searchText.patchValue(this.searchTextValue, { emitEvent: false });
     this.searchText.valueChanges

@@ -2,22 +2,28 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   Output,
+  effect,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MixDatabase, MixRelationShip } from '@mixcore/lib/model';
-import { SuccessFilter } from '@mixcore/share/base';
+import {
+  MixDatabase,
+  MixRelationShip,
+  RelationShipType,
+} from '@mixcore/lib/model';
 import { ArrayUtil } from '@mixcore/share/form';
-import { DatabaseStore } from '@mixcore/share/stores';
 import { MixButtonComponent } from '@mixcore/ui/button';
 import { MixInputComponent } from '@mixcore/ui/input';
 import { MixSelectComponent } from '@mixcore/ui/select';
-import { debounceTime, filter, take } from 'rxjs';
+import { debounceTime } from 'rxjs';
+import { MasterDbStore } from '../../store/master-db.store';
 
 @Component({
   selector: 'mix-database-relationship-record',
@@ -38,25 +44,44 @@ export class DatabaseRelationshipRecordComponent {
   @Output() public delete = new EventEmitter();
   @Output() public valueChange = new EventEmitter();
   @Input() public value!: Partial<MixRelationShip>;
-  public databaseStore = inject(DatabaseStore);
-  public allDatabaseIds: number[] = [];
+  @Input() end = false;
+  public databaseStore = inject(MasterDbStore);
+  public cdr = inject(ChangeDetectorRef);
+
+  public show = false;
+  public allType = [RelationShipType.ManyToMany, RelationShipType.OneToMany];
+
+  public allDatabaseIds = signal<number[]>([]);
   public allDbDict: Record<number, MixDatabase> = {};
   public form = inject(FormBuilder).group({
     displayName: ['', Validators.required],
     childId: [<number | undefined>undefined, Validators.required],
+    type: [''],
   });
 
   public labelProcess = (dbId: number) => {
     return this.allDbDict[dbId]?.displayName || '';
   };
 
+  public labelRelationShipProcess = (type: RelationShipType) => {
+    return type === RelationShipType.ManyToMany
+      ? 'Many to Many'
+      : 'One to Many';
+  };
+
   constructor() {
-    this.databaseStore.vm$
-      .pipe(takeUntilDestroyed(), filter(SuccessFilter), take(1))
-      .subscribe((v) => {
-        this.allDatabaseIds = v.data.map((x) => x.id);
-        this.allDbDict = ArrayUtil.toRecord(v.data, 'id');
-      });
+    effect(
+      () => {
+        const state = this.databaseStore.stateSignal();
+        if (state) {
+          this.allDbDict = ArrayUtil.toRecord(state.data, 'id');
+          this.allDatabaseIds.set(state.data.map((x) => x.id));
+          this.show = true;
+          this.cdr.detectChanges();
+        }
+      },
+      { allowSignalWrites: true }
+    );
 
     this.form.valueChanges
       .pipe(takeUntilDestroyed(), debounceTime(200))
@@ -74,6 +99,7 @@ export class DatabaseRelationshipRecordComponent {
   }
 
   ngOnInit() {
+    this.databaseStore.stateSignal();
     this.form.patchValue(this.value, { emitEvent: false });
   }
 }

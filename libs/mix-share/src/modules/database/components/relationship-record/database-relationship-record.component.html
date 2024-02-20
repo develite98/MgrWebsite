@@ -1,9 +1,10 @@
 <div class="card-01-wrap"
+     [class.--end]="end"
      [class.--new]="value.new"
      [formGroup]="form">
   <div class="card-01">
     <div class="grid-cols-12 grid gap-4">
-      <div class="col-span-4 flex items-center gap-2">
+      <div class="col-span-3 flex items-center gap-2">
         <ng-content></ng-content>
 
         <mix-input placeHolder="Display name"
@@ -11,15 +12,20 @@
       </div>
 
       <div class="col-span-4">
-        <mix-select class="w-full"
-                    [items]="allDatabaseIds"
+        <mix-select *ngIf="show"
+                    class="w-full"
+                    [items]="allDatabaseIds()"
                     [labelProcess]="labelProcess"
                     placeHolder="Choose database"
                     formControlName="childId"></mix-select>
       </div>
 
-      <div class="col-span-4 items-center flex">
-        <span class="text-500"> One to Many </span>
+      <div class="col-span-2 items-center flex">
+        <mix-select class="w-full"
+                    [items]="allType"
+                    [labelProcess]="labelRelationShipProcess"
+                    placeHolder="Choose relation type"
+                    formControlName="type"></mix-select>
       </div>
     </div>
 

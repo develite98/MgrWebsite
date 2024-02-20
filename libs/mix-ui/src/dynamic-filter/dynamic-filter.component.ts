@@ -77,7 +77,7 @@ export class DynamicFilterComponent {
 
   public applyChange() {
     this.filters = this.filters
-      .filter((x) => x.value)
+      .filter((x) => x.value !== undefined && x.value !== null)
       .map((f) => {
         f.isRequired = this.logicalOperateForm.value === LogicalOperate.All;
         return f;

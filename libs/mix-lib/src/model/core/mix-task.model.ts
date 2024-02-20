@@ -74,11 +74,13 @@ export class MixTaskNew {
   lastModified?: Date;
   reporter?: string;
   userIds?: string[];
-  projectId?: number;
+  mixProjectId?: number;
   priority!: number;
   parentTaskId?: number;
   fromDate?: Date;
   dueDate?: Date;
+  taskPoint: number = 1;
+  checkList: Record<string, boolean> = {};
 
   constructor(value: MixTaskNew) {
     if (value) {
@@ -90,6 +92,23 @@ export class MixTaskNew {
       this.lastModified = processMixDate(value.lastModified) as Date;
       this.fromDate = processMixDate(value.fromDate) as Date;
       this.dueDate = processMixDate(value.dueDate) as Date;
+
+      if (value.checkList && typeof value.checkList === 'string') {
+        const obj: Record<string, boolean> = JSON.parse(value.checkList);
+        this.checkList = obj;
+      } else {
+        this.checkList = {};
+      }
     }
   }
+}
+
+export interface TaskChecklist {
+  description: string;
+  isClose: boolean;
+}
+
+export interface TaskStatistic {
+  total: number;
+  done: number;
 }

@@ -8,6 +8,8 @@ import {
 import { MixApiFacadeService } from '@mixcore/share/api';
 import { BaseComponent } from '@mixcore/share/base';
 import { MixButtonComponent } from '@mixcore/ui/button';
+import { tap } from 'rxjs';
+import { DbMigrationService } from './db-migration.service';
 
 @Component({
   selector: 'mix-migrate-table-btn',
@@ -31,11 +33,15 @@ import { MixButtonComponent } from '@mixcore/ui/button';
 export class MigrateTableButtonComponent extends BaseComponent {
   @Input() public dbSysName?: string;
   public mixApi = inject(MixApiFacadeService);
+  public restart = inject(DbMigrationService);
 
   public migrateSingleTable() {
     this.mixApi.databaseApi
       .migrateToSingleTable(this.dbSysName!)
-      .pipe(this.observerLoadingStateSignal())
+      .pipe(
+        this.observerLoadingStateSignal(),
+        tap(() => this.restart.restartApp('Success migrate table'))
+      )
       .subscribe();
   }
 }

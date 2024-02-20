@@ -1,4 +1,5 @@
 <div class="card-01-wrap"
+     [class.--end]="end"
      [class.--new]="entity.new"
      [style.--color]="getColor(form.value)">
   <div class="card-01"
@@ -92,7 +93,7 @@
         <div class="grid grid-cols-12 gap-2 mb-1"
              [formGroup]="form">
           <div class="col-span-12">
-            <div class="text-l text-500">{{ group.label }}</div>
+            <div class="text-l font-medium">{{ group.label }}</div>
           </div>
           <div *ngFor="let dataType of group.types"
                class="col-span-6">

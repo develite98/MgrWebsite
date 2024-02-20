@@ -44,10 +44,8 @@ export class TaskCardComponent implements OnChanges {
 
   public onClick() {
     this.dialog.open(TaskDetailModalComponent, {
-      width: 1024,
       data: { task: this.task },
-      minHeight: '50vh',
-      windowClass: TaskDetailModalComponent.windowClass,
+      ...TaskDetailModalComponent.modalSetting,
     });
   }
 

@@ -4,10 +4,11 @@ import {
   Component,
   TemplateRef,
   ViewChild,
-  ViewContainerRef,
   inject,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { BasePageComponent } from '@mixcore/share/base';
+import { MixBreadcrumbsModule } from '@mixcore/ui/breadcrumbs';
 import { ToolbarService } from '../../components/main-toolbar/toolbar.service';
 import { ProjectSelectComponent } from './components/project-select/project-select.component';
 import { TaskManageStore } from './store/task-ui.store';
@@ -17,20 +18,16 @@ import { TaskManageStore } from './store/task-ui.store';
   templateUrl: './task-manage.layout.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, CommonModule, ProjectSelectComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ProjectSelectComponent,
+    MixBreadcrumbsModule,
+  ],
 })
-export class TaskManageLayoutComponent {
+export class TaskManageLayoutComponent extends BasePageComponent {
   @ViewChild('projectTroller') public projectCtrl!: TemplateRef<unknown>;
 
   public toolbarSrv = inject(ToolbarService);
-  public viewRef = inject(ViewContainerRef);
   public uiStore = inject(TaskManageStore);
-
-  ngAfterViewInit() {
-    this.toolbarSrv.add(this.projectCtrl, this.viewRef);
-  }
-
-  ngOnDestroy() {
-    this.toolbarSrv.remove();
-  }
 }

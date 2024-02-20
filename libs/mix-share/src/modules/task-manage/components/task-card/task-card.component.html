@@ -1,23 +1,23 @@
 <div class="task-card-wrap"
      (click)="onClick()">
   <div class="task-card">
-    <div class="pb-3">
+    <div class="pb-3 text-sm">
+      <span class="text-uppercase text-secondary inline-block mr-1">
+        {{ task.id }}
+      </span>
+
       {{ task.title }}
     </div>
 
-    <div class="pb-3">
+    <div *ngIf="task.dueDate"
+         class="pb-3">
       <task-date-display [task]="task"></task-date-display>
     </div>
 
-    <div class="flex">
-      <span *ngIf="userInfo"
-            class="me-2">
+    <div class="flex items-center gap-2">
+      <span *ngIf="userInfo">
         <mix-user-avatar [userInfo]="userInfo"
                          size="xs"></mix-user-avatar>
-      </span>
-
-      <span class="text-uppercase text-secondary">
-        {{ task.type }}-{{ task.id }}
       </span>
 
       <span class="mr-auto flex gap-2 items-center">

@@ -14,7 +14,8 @@ import {
 } from '@mixcore/lib/model';
 import { BaseComponent } from '@mixcore/share/base';
 import { UserSelectComponent } from '@mixcore/share/components';
-import { FormHelper } from '@mixcore/share/form';
+import { MixAutoFocus } from '@mixcore/share/directives';
+import { FormHelper, ObjectUtil } from '@mixcore/share/form';
 import { MixButtonComponent } from '@mixcore/ui/button';
 import { MixEditorComponent } from '@mixcore/ui/editor';
 import { MixInputComponent } from '@mixcore/ui/input';
@@ -41,6 +42,7 @@ import { TaskTypeSelectComponent } from '../task-type-select/task-type-select.co
     UserSelectComponent,
     TaskTypeSelectComponent,
     TaskPrioritySelectComponent,
+    MixAutoFocus,
   ],
   templateUrl: './task-create.component.html',
   styleUrls: ['./task-create.component.scss'],
@@ -61,9 +63,8 @@ export class TaskCreateComponent extends BaseComponent {
     taskPriority: new FormControl(TaskPriority.LOW, Validators.required),
     taskStatus: new FormControl(TaskStatus.BACKLOG),
     reporter: new FormControl(),
-    priority: new FormControl(999),
     parentTaskId: new FormControl(),
-    projectId: new FormControl(),
+    mixProjectId: new FormControl(),
   });
 
   public ngOnInit() {
@@ -75,14 +76,14 @@ export class TaskCreateComponent extends BaseComponent {
     }
 
     this.taskUiStore.selectedProjectId$.pipe(take(1)).subscribe((id) => {
-      this.taskForm.controls.projectId.patchValue(id);
+      this.taskForm.controls.mixProjectId.patchValue(id);
     });
   }
 
   public createTask() {
     if (FormHelper.validateForm(this.taskForm)) {
       this.taskService
-        .saveTask(this.taskForm.value as MixTaskNew)
+        .saveTask(ObjectUtil.clean(this.taskForm.value) as MixTaskNew)
         .pipe(this.observerLoadingStateSignal())
         .subscribe({
           next: (result) => {

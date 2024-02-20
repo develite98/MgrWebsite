@@ -18,25 +18,28 @@
       "@mixcore/lib/auth": ["libs/mix-lib/src/auth/index.ts"],
       "@mixcore/lib/model": ["libs/mix-lib/src/model/index.ts"],
       "@mixcore/lib/swagger": ["libs/mix-lib/src/swagger/index.ts"],
+      "@mixcore/module/account": [
+        "libs/mix-share/src/modules/account/index.ts"
+      ],
+      "@mixcore/module/auth": ["libs/mix-share/src/modules/auth/index.ts"],
+      "@mixcore/module/brand": ["libs/mix-share/src/modules/brand/index.ts"],
       "@mixcore/module/database": [
         "libs/mix-share/src/modules/database/index.ts"
-      ],
-      "@mixcore/module/layout": ["libs/mix-share/src/modules/layout/index.ts"],
-      "@mixcore/module/task": [
-        "libs/mix-share/src/modules/task-manage/index.ts"
       ],
       "@mixcore/module/form-editor": [
         "libs/mix-share/src/modules/form-editor/index.ts"
       ],
-      "@mixcore/module/account": [
-        "libs/mix-share/src/modules/account/index.ts"
-      ],
+      "@mixcore/module/layout": ["libs/mix-share/src/modules/layout/index.ts"],
       "@mixcore/module/scheduler": [
         "libs/mix-share/src/modules/scheduler/index.ts"
       ],
-      "@mixcore/module/auth": ["libs/mix-share/src/modules/auth/index.ts"],
+      "@mixcore/module/task": [
+        "libs/mix-share/src/modules/task-manage/index.ts"
+      ],
+      "@mixcore/module/wiki": ["libs/mix-share/src/modules/wiki/index.ts"],
       "@mixcore/share/animation": ["libs/mix-share/src/animations/index.ts"],
       "@mixcore/share/api": ["libs/mix-share/src/api-service/index.ts"],
+      "@mixcore/share/app": ["libs/mix-share/src/app/index.ts"],
       "@mixcore/share/auth": ["libs/mix-share/src/auth/index.ts"],
       "@mixcore/share/base": ["libs/mix-share/src/bases/index.ts"],
       "@mixcore/share/components": ["libs/mix-share/src/components/index.ts"],
@@ -52,7 +55,9 @@
       "@mixcore/ui/array-media": ["libs/mix-ui/src/array-media/index.ts"],
       "@mixcore/ui/array-radio": ["libs/mix-ui/src/array-radio/index.ts"],
       "@mixcore/ui/base-control": ["libs/mix-ui/src/base/index.ts"],
+      "@mixcore/ui/breadcrumbs": ["libs/mix-ui/src/breadcrumbs/index.ts"],
       "@mixcore/ui/button": ["libs/mix-ui/src/button/index.ts"],
+      "@mixcore/ui/checkbox": ["libs/mix-ui/src/checkbox/index.ts"],
       "@mixcore/ui/code-editor": ["libs/mix-ui/src/code-editor/index.ts"],
       "@mixcore/ui/color-picker": ["libs/mix-ui/src/color-picker/index.ts"],
       "@mixcore/ui/date-picker": ["libs/mix-ui/src/date-picker/index.ts"],
@@ -76,11 +81,10 @@
       "@mixcore/ui/sidebar": ["libs/mix-ui/src/portal-sidebar/index.ts"],
       "@mixcore/ui/skeleton": ["libs/mix-ui/src/skeleton-loading/index.ts"],
       "@mixcore/ui/table": ["libs/mix-ui/src/data-table/index.ts"],
+      "@mixcore/ui/tag-select": ["libs/mix-ui/src/tag-select/index.ts"],
       "@mixcore/ui/textarea": ["libs/mix-ui/src/text-area/index.ts"],
       "@mixcore/ui/toggle": ["libs/mix-ui/src/toggle/index.ts"],
-      "@mixcore/ui/upload": ["libs/mix-ui/src/upload/index.ts"],
-      "@mixcore/ui/checkbox": ["libs/mix-ui/src/checkbox/index.ts"],
-      "@mixcore/ui/breadcrumbs": ["libs/mix-ui/src/breadcrumbs/index.ts"]
+      "@mixcore/ui/upload": ["libs/mix-ui/src/upload/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

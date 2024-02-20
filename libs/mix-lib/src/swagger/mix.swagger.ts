@@ -9,6 +9,7 @@ export const MixSwagger = {
   global: {
     globalSetting: '/api/v2/rest/shared/get-global-settings',
     dashboardInfo: '/api/v2/rest/mix-portal/common/en-US/dashboard',
+    restartApp: '/api/v2/rest/shared/stop-application',
   },
   content: {
     pageContent: '/api/v2/rest/mix-portal/mix-page-content',

@@ -1,30 +1,61 @@
 <div class="mix-data-table">
   <div class="mix-data-table__filter flex">
     <div class="grid grid-cols-12 gap-4 w-full">
-      <div class="col-span-12 flex">
-        <tui-input class="search-input"
-                   [formControl]="searchText"
-                   [tuiTextfieldCleaner]="true"
-                   [tuiTextfieldLabelOutside]="true"
-                   [tuiTextfieldSize]="'m'"
-                   tuiTextfieldIconLeft="tuiIconSearchLarge">
-          {{ searchPlaceholder }}
-        </tui-input>
+      <div *ngIf="showSearch"
+           class="col-span-12 flex mt-3">
+        <div *ngIf="viewMode() as mode"
+             class="inline-flex items-center rounded-md shadow-sm mr-1">
+          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium p-3 inline-flex space-x-1 items-center"
+                  [ngClass]="{'!bg-primary !text-white': mode === 'table'}"
+                  (click)="viewMode.set('table')">
+            <span class="mix-icon">
+              table_rows
+            </span>
+          </button>
+          <button class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium p-3 inline-flex space-x-1 items-center"
+                  [ngClass]="{'!bg-primary !text-white': mode === 'card'}"
+                  (click)="viewMode.set('card')">
+            <span class="mix-icon">
+              space_dashboard
+            </span>
+          </button>
+        </div>
 
-        <tui-multi-select class="ms-2 select"
-                          [expandable]="false"
-                          [formControl]="searchField"
-                          [tuiTextfieldLabelOutside]="true"
-                          [tuiTextfieldSize]="'m'">
-          <input tuiTextfield>
+        <div class="relative search-input">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none shadow-sm">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                 aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 20 20">
+              <path stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
+            </svg>
+          </div>
 
-          <tui-data-list-wrapper *tuiDataList
-                                 [items]="searchFieldOptions"
-                                 tuiMultiSelectGroup></tui-data-list-wrapper>
-        </tui-multi-select>
+          <input class="block w-full !outline-none p-2 ps-11 pr-30 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-primary"
+                 id="default-search"
+                 [formControl]="searchText"
+                 [placeholder]="searchPlaceholder + '...'">
+          <!--
+          <tui-multi-select class="ms-2 select absolute right-0 top-1"
+                            [expandable]="false"
+                            [formControl]="searchField"
+                            [tuiTextfieldLabelOutside]="true"
+                            [tuiTextfieldSize]="'m'">
+            <input tuiTextfield>
+
+            <tui-data-list-wrapper *tuiDataList
+                                   [items]="searchFieldOptions"
+                                   tuiMultiSelectGroup></tui-data-list-wrapper>
+          </tui-multi-select> -->
+        </div>
+
+
       </div>
-
-      <ng-content select="[filter]"></ng-content>
     </div>
   </div>
 
@@ -33,6 +64,8 @@
     <tui-loader class="h-full"
                 [overlay]="true"
                 [showLoader]="(loading && !dataset.length) || forceLoading">
+
+      @if (viewMode() === 'table') {
       <div class="relative overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 bg-gray-50 z-10 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
@@ -40,11 +73,10 @@
               <ng-container *ngFor="let col of displayColumns; let i = index">
                 <th class="px-6 py-3">
                   <div class="flex items-center">
-                    <input *ngIf="i === 0"
-                           class="form-check-input me-4"
-                           type="checkbox"
-                           [ngModel]="isAllSelected"
-                           (ngModelChange)="markAllChecked($event)">
+                    <mix-checkbox *ngIf="i === 0"
+                                  class="form-check-input me-4"
+                                  [checked]="isAllSelected"
+                                  (checkedChange)="markAllChecked($event)"></mix-checkbox>
 
                     <div class="grow">
                       <ng-container *ngIf="col.tplHeader">
@@ -70,24 +102,23 @@
             <tr *ngFor="let item of dataset; trackBy: dataTrackBy"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-60"
                 [ngClass]="{
-            '--selected': !!currentSelectedItemDic[$any(item)[uniqueKey]]
-          }">
+              '--selected': !!currentSelectedItemDic[$any(item)[uniqueKey]]
+            }">
               <ng-container *ngFor="let col of displayColumns; let i = index">
                 <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     [ngStyle]="{ width: col.width, 'min-width': col.minWidth }">
                   <div class="flex h-full items-center">
-                    <input *ngIf="i === 0"
-                           class="form-check-input me-4"
-                           type="checkbox"
-                           [ngModel]="!!currentSelectedItemDic[$any(item)[uniqueKey]]"
-                           (ngModelChange)="onItemSelected($event, item)">
+                    <mix-checkbox *ngIf="i === 0"
+                                  class="form-check-input me-4"
+                                  [checked]="!!currentSelectedItemDic[$any(item)[uniqueKey]]"
+                                  (checkedChange)="onItemSelected($event, item)"></mix-checkbox>
 
                     <div class="grow">
                       <ng-container *ngIf="col.tplCell">
                         <ng-container *ngTemplateOutlet="
-                        col.tplCell.template;
-                        context: { $implicit: item }
-                      "></ng-container>
+                          col.tplCell.template;
+                          context: { $implicit: item }
+                        "></ng-container>
                       </ng-container>
 
                       <ng-container *ngIf="!col.tplCell">
@@ -98,10 +129,11 @@
                 </td>
               </ng-container>
 
-              <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white sticky right-0 bg-white">
                 <mix-button type="outline"
                             [iconBtn]="true"
                             [tp]="tpl"
+                            [tpOffset]="[0, -5]"
                             tpPlacement="bottom-end"
                             tpVariation="popper"
                             size="s">
@@ -129,6 +161,54 @@
           </tbody>
         </table>
       </div>
+      } @else {
+      <div class="px-4 grid grid-flow-row gap-4 text-neutral-600 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div *ngFor="let item of dataset; trackBy: dataTrackBy"
+             class="block bg-slate-100 w-full p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 relative">
+          <button class="absolute top-2 right-2 p-2 rounded-full"
+                  [tp]="tplCard"
+                  [tpOffset]="[0, -5]"
+                  tpPlacement="bottom-end"
+                  tpVariation="popper"><span class="mix-icon"> more_horiz </span></button>
+
+          <ng-template #tplCard
+                       let-hide>
+            <div class="py-1"
+                 role="none">
+              <div *ngFor="let v of contextMenus"
+                   class="mix-menu-item"
+                   (click)="hide(); v.action(item)"
+                   tabindex="-1">
+                <div class="flex items-center gap-3">
+                  <span class="mix-icon"> {{ v.icon }}</span>
+                  <div>
+                    {{ v.label }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <div *ngFor="let col of displayColumns; let i = index"
+               class="w-full flex flex-col justify-between gap-2 items-start mb-2 ">
+
+            <div class="flex-wrap">
+              <ng-container *ngIf="col.tplCell">
+                <ng-container *ngTemplateOutlet="
+                  col.tplCell.template;
+                  context: { $implicit: item }
+                "></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="!col.tplCell">
+                {{ $any(item)[col.key] ?? '--' }}
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+
     </tui-loader>
   </div>
 

@@ -1,6 +1,18 @@
-<div class="flex items-center h-full">
-  <mix-button [iconBtn]="true"
+<div class="flex items-center h-full gap-2">
+  <!-- <mix-button [iconBtn]="true"
               (click)="btnClick()">
     <span class="mix-icon">edit</span>
-  </mix-button>
+  </mix-button> -->
+
+  <button class="px-2 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-primary rounded-lg hover:brightness-[1.15] transition-all active:brightness-90  focus:outline-none"
+          type="button"
+          (click)="parentComp.editData(dataId)">
+    <span class="mix-icon">edit</span>
+  </button>
+
+  <button class="px-2 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-600 rounded-lg hover:brightness-[1.15] transition-all active:brightness-90  focus:outline-none dark:bg-red-500"
+          type="button"
+          (click)="parentComp.processDeleteData([dataId])">
+    <span class="mix-icon">delete</span>
+  </button>
 </div>

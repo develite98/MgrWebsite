@@ -1,12 +1,13 @@
-<div class="mt-1 notification --info">
+<div class="mt-3 notification --info">
   We now support the following relationship types:
-  <span class="text-highlight">One to Many</span>
+  <span class="text-highlight">One to Many</span>,
+  <span class="text-highlight">Many to Many</span>
 </div>
 
 <div class="card-list">
   <div class="card-list__header mt-3 mb-1">
     <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-4 name">
+      <div class="col-span-3 name">
         <div>Name</div>
       </div>
 
@@ -22,13 +23,14 @@
 
   <div [cdkDropListData]="relationships"
        cdkDropList>
-    @for (item of relationships; track item.childId; let i = $index) {
+    @for (item of relationships; track item.childId; let i = $index, last = $last) {
     <mix-database-relationship-record [cdkDragData]="item"
+                                      [end]="last"
                                       [value]="item"
                                       (delete)="onDelete(item, i)"
                                       (valueChange)="onValueChane($event, i)"
                                       cdkDrag>
-      <span class="mix-icon cursor-grab"
+      <span class="mix-icon cursor-grabbing"
             cdkDragHandle>drag_indicator</span>
     </mix-database-relationship-record>
     }

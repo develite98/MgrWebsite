@@ -8,6 +8,7 @@ import {
 import { MixApiFacadeService } from '@mixcore/share/api';
 import { BaseComponent } from '@mixcore/share/base';
 import { MixButtonComponent } from '@mixcore/ui/button';
+import { DbMigrationService } from './db-migration.service';
 
 @Component({
   selector: 'mix-restore-table-btn',
@@ -30,7 +31,9 @@ import { MixButtonComponent } from '@mixcore/ui/button';
 })
 export class RestoreTableButtonComponent extends BaseComponent {
   @Input() public dbSysName?: string;
+
   public mixApi = inject(MixApiFacadeService);
+  public restart = inject(DbMigrationService);
 
   public restoreSingleTable() {
     this.mixApi.databaseApi

@@ -18,26 +18,4 @@
     background-clip: padding-box;
     border: 3px solid transparent;
   }
-
-  ::-webkit-scrollbar-button:single-button {
-    display: block;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  ::-webkit-scrollbar-button:single-button:vertical:decrement {
-    background-image: url('/assets/icons/caret-up-arrow.svg');
-  }
-
-  ::-webkit-scrollbar-button:single-button:vertical:increment {
-    background-image: url('/assets/icons/caret-down-arrow.svg');
-  }
-
-  ::-webkit-scrollbar-button:single-button:horizontal:decrement {
-    background-image: url('/assets/icons/caret-left-arrow.svg');
-  }
-
-  ::-webkit-scrollbar-button:single-button:horizontal:increment {
-    background-image: url('/assets/icons/caret-right-arrow.svg');
-  }
 }

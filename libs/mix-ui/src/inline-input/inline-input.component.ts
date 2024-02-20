@@ -24,6 +24,7 @@ export class MixInlineInputComponent
   implements ControlValueAccessor
 {
   @Input() public override placeHolder = 'Type something';
+  @Input() public size: 'base' | 'xl' | '2xl' = 'base';
   public editing = false;
 
   public toggleEditTitle() {

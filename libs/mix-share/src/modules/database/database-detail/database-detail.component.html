@@ -3,10 +3,11 @@
     <mix-database-select [isCreate]="mode == 'create'"
                          [prefix]="'Setting'"
                          [selectedItemId]="id"
+                         (onCreate)="onCreateTable()"
                          (selectedItemChange)="selectedTableChange($event)"></mix-database-select>
   </div>
-
-  <div class="data-detail-page__content-container grow">
+  <!--  -->
+  <div class="data-detail-page__content-container grow shadow-200 rounded-tl-xl">
     <tui-loader *ngIf="loadingState$ | async as state"
                 class="data-detail-page"
                 [formGroup]="form"
@@ -17,11 +18,13 @@
           <div class="flex items-center gap-1">
             <mix-inline-input [placeHolder]="'Type your db name'"
                               formControlName="displayName"></mix-inline-input>
+            @if (mode === 'create') {
             <div class="text-s text-sub">inside</div>
             <mix-db-context-select class="ms-2"
                                    [ignoreItemAll]="true"
                                    [selectedItemId]="form.value.mixDatabaseContextId"
                                    (selectedItemChange)="updateDbContext($event.id)"></mix-db-context-select>
+            }
           </div>
 
 

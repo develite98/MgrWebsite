@@ -1,7 +1,11 @@
 @if (loadingState() === 'Success') {
+<div class="ngneat-close-dialog task-detail__delete">
+  <span class="mix-icon text-red-600 text-lg"
+        (click)="deleteTask()">delete</span>
+</div>
+
 <div class="task-detail"
      [formGroup]="taskForm">
-  <!-- Title -->
   <div class="task-detail__title"
        [style.--color]="TaskStatusColors[task.taskStatus]">
     <div class="flex align-item-center gap-1">
@@ -9,12 +13,12 @@
       <span>{{ task.type }}-{{ task.id }}</span>
     </div>
 
-    <mix-inline-input formControlName="title"></mix-inline-input>
+    <mix-inline-input [size]="'2xl'"
+                      formControlName="title"></mix-inline-input>
 
-    <div class="w-full mt-1 mb-1 flex items-end">
-      <!-- Reporter -->
+    <div class="w-full mt-1 mb-1 flex items-center">
       <div class="flex gap-2 items-center">
-        <div class="mt-2 mb-1 text-500 text-s text-sub">Reporter</div>
+        <div class="font-medium text-sub">Reporter</div>
         <mix-user-select class="item"
                          [size]="'s'"
                          formControlName="reporter"></mix-user-select>
@@ -28,11 +32,10 @@
   </div>
 
   <div class="task-detail__main-core">
-    <div class="grid grid-cols-12 gap-2">
-      <div class="col-span-3">
-        <!-- Status -->
-        <div class="flex gap-2 items-center">
-          <div class="text-s text-sub label">Status:</div>
+    <div class="flex gap-2">
+      <div>
+        <div class="flex gap-1 items-center">
+          <div class="font-medium text-sub label">Status:</div>
           <mix-select class="item"
                       [items]="statusItems"
                       [labelProcess]="statusLabel"
@@ -40,65 +43,158 @@
                       formControlName="taskStatus"></mix-select>
         </div>
 
-        <!-- Priority -->
-        <div class="flex gap-2 items-center mt-2">
-          <div class="text-s text-sub label">Priority:</div>
+        <div class="flex gap-1 items-center mt-2">
+          <div class="font-medium text-sub label">Priority:</div>
           <task-priority-select class="item"
                                 [size]="'s'"
                                 formControlName="taskPriority"></task-priority-select>
         </div>
       </div>
 
-      <div class="col-span-3">
-        <!-- Story point -->
-        <div class="flex gap-2 items-center">
-          <div class="text-s text-sub label">Effort:</div>
+      <div class="ms-3">
+        <div class="flex gap-1 items-center">
+          <div class="font-medium text-sub label">Effort:</div>
           <story-point-select class="item"
                               [size]="'s'"
                               formControlName="taskPoint"></story-point-select>
         </div>
+
+        <div class="flex gap-1 items-center mt-2">
+          <div class="font-medium text-sub label">Date:</div>
+          <start-end-date class="item"
+                          [task]="task"
+                          (taskDateChange)="onDateChange($event)"></start-end-date>
+        </div>
       </div>
 
-      <div class="col-start-11 col-span-2">
-        <div class="text-xs text-sub">
-          <div>
-            Updated at
-            {{
+      <div class="ms-auto">
+        <span class="text-m text-sub">
+          Updated at
+          {{
               task.lastModified || task.createdDateTime
                 | mixDate
                 | date : 'dd/MM/yyyy hh:mm' || '--'
             }}
-          </div>
-        </div>
+        </span>
       </div>
     </div>
   </div>
 
   <div class="task-detail__body">
-    <div class="grid grid-cols-12 gap-2">
-      <div class="col-span-8">
-        <div class="mb-1 text-500 text-s text-sub label">Description</div>
-        <mix-rich-text-editor class="description"
-                              [placeHolder]="'Make your description even better.'"
-                              formControlName="description"></mix-rich-text-editor>
+    <div class="grid grid-cols-12 gap-6 mt-2">
+      <div class="col-span-7">
+        <task-content-expand title="Description">
+          <mix-rich-text-editor class="description"
+                                [placeHolder]="'Make your description even better.'"
+                                formControlName="description"></mix-rich-text-editor>
+        </task-content-expand>
 
-        <div class="mt-4 mb-2 text-500 text-s text-sub label">
-          Discussion(s)
+
+        <div class="mt-4 mb-2">
+          <task-content-expand title="Discussion">
+            In-development
+          </task-content-expand>
         </div>
       </div>
 
-      <div class="col-span-4">
-        <div class="mb-1 text-500 text-s text-sub label">Add to task</div>
-        <div class="flex flex-wrap gap-2">
-          <start-end-date [task]="task"
-                          (taskDateChange)="onDateChange($event)"></start-end-date>
-        </div>
+      <div class="col-span-5">
+        <task-content-expand title="Check list(s)">
+          <task-checklists [data]="task.checkList"
+                           (checkListsChange)="onCheckListChange($event)"></task-checklists>
+        </task-content-expand>
       </div>
     </div>
   </div>
 </div>
 } @else {
-<div class="task-detail__loading">
-  <mix-skeleton-loading [type]="'form'"></mix-skeleton-loading>
+<div class="w-full h-full">
+  <div class="p-10">
+    <content-loader [backgroundColor]="'#f3f3f3'"
+                    [foregroundColor]="'#ecebeb'"
+                    [viewBox]="'0 0 940 300'">
+      <svg:rect x="0"
+                y="0"
+                rx="3"
+                ry="3"
+                width="627"
+                height="24"></svg:rect>
+      <svg:rect x="0"
+                y="29"
+                rx="3"
+                ry="3"
+                width="506"
+                height="24"></svg:rect>
+      <svg:rect x="0"
+                y="77"
+                rx="3"
+                ry="3"
+                width="590"
+                height="16"></svg:rect>
+      <svg:rect x="0"
+                y="100"
+                rx="3"
+                ry="3"
+                width="627"
+                height="16"></svg:rect>
+      <svg:rect x="0"
+                y="123"
+                rx="3"
+                ry="3"
+                width="480"
+                height="16"></svg:rect>
+      <svg:rect x="0"
+                y="187"
+                rx="3"
+                ry="3"
+                width="370"
+                height="16"></svg:rect>
+      <svg:circle cx="18"
+                  cy="239"
+                  r="18"></svg:circle>
+      <svg:rect x="46"
+                y="217"
+                rx="3"
+                ry="3"
+                width="548"
+                height="42"></svg:rect>
+      <svg:rect x="683"
+                y="3"
+                rx="3"
+                ry="3"
+                width="135"
+                height="14"></svg:rect>
+      <svg:rect x="683"
+                y="33"
+                rx="3"
+                ry="3"
+                width="251"
+                height="24"></svg:rect>
+      <svg:rect x="683"
+                y="90"
+                rx="3"
+                ry="3"
+                width="135"
+                height="14"></svg:rect>
+      <svg:rect x="683"
+                y="120"
+                rx="3"
+                ry="3"
+                width="251"
+                height="24"></svg:rect>
+      <svg:rect x="683"
+                y="177"
+                rx="3"
+                ry="3"
+                width="135"
+                height="14"></svg:rect>
+      <svg:rect x="683"
+                y="207"
+                rx="3"
+                ry="3"
+                width="251"
+                height="24"></svg:rect>
+    </content-loader>
+  </div>
+
 </div>
 }

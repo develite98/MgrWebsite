@@ -1,0 +1,72 @@
+<ng-template #breadcrumb>
+  <mix-breadcrumbs>
+    <div name="Home"
+         mixBreadcrumbItem></div>
+
+    <div name="Brand"
+         [templateRef]="brandSelect"
+         mixBreadcrumbItem>
+      <ng-template #brandSelect>
+        <mix-brand-select (selectedItemChange)="brandUi.changeSelected($event)"></mix-brand-select>
+      </ng-template>
+    </div>
+
+    <div name="Branch"
+         mixBreadcrumbItem>
+    </div>
+  </mix-breadcrumbs>
+</ng-template>
+
+<div class="data-table-page board">
+  <div class="data-table-page__main-container">
+    <mix-sub-toolbar [description]="'Work on'"
+                     [title]="'Branch Management'">
+      <mix-button class="ms-2"><span class="material-symbols-outlined"> add </span>
+        {{ 'New'  }}</mix-button>
+    </mix-sub-toolbar>
+
+    <div *ngIf="store.state$$() as vm"
+         class="data-table-page__body">
+      <mix-data-table [contextMenus]="contextMenus"
+                      [dataset]="vm.data"
+                      [loading]="vm.status === 'Loading'"
+                      [pageInfo]="vm.pageInfo"
+                      [searchFieldOptions]="store.searchColumns"
+                      [uniqueKey]="'id'"
+                      (itemsSelectedChange)="selectedItems = $event"
+                      (pageChange)="store.changePage($event)"
+                      (searchChange)="store.search($event.searchText, $event.searchField)">
+        <div [columnType]="'CHECKBOX'"
+             mixTableColumn></div>
+
+        <div [header]="'Name'"
+             [minWidth]="'150px'"
+             key="userName"
+             mixTableColumn>
+          <ng-template let-data
+                       mixColumnCell>
+            <div class="font-semibold cursor-pointer">
+              {{data.name}}
+            </div>
+          </ng-template>
+        </div>
+
+        <div [header]="'Code'"
+             key="code"
+             mixTableColumn>
+        </div>
+
+        <div [header]="'Address'"
+             key="address"
+             mixTableColumn>
+          <ng-template let-data
+                       mixColumnCell>
+            <div>
+              {{ data.address ?? 'N/A' }}
+            </div>
+          </ng-template>
+        </div>
+      </mix-data-table>
+    </div>
+  </div>
+</div>

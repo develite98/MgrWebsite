@@ -5,7 +5,7 @@
 .tippy-variation-popper {
   .tippy-content {
     padding: 5px 0px !important;
-    background-color: #eaf0f3e6;
+    // background-color: #eaf0f3e6;
 
     .popup-container {
       max-height: 50vh;
@@ -27,6 +27,7 @@
   border-radius: 12px !important;
   overflow: hidden;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1), 0 14px 28px rgba(0, 0, 0, 0.14) !important;
+  background: #fff !important;
 }
 
 .tippy-variation-tooltip.compress-image-preview {

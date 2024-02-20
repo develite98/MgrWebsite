@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,15 +6,13 @@ import {
   NgZone,
   OnInit,
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { zoomOutLeftOnLeaveAnimation } from '@mixcore/share/animation';
 import { MixEaterEgg } from '@mixcore/share/api';
 import { AuthService } from '@mixcore/share/auth';
-import { LoadingScreenComponent } from '@mixcore/share/components';
 import { DomHelper } from '@mixcore/share/helper';
 import { ModalService } from '@mixcore/ui/modal';
-import { TuiRootModule } from '@taiga-ui/core';
 import { filter, forkJoin, switchMap } from 'rxjs';
 
 @Component({
@@ -24,8 +21,6 @@ import { filter, forkJoin, switchMap } from 'rxjs';
   styleUrls: ['./app.component.scss'],
   animations: [zoomOutLeftOnLeaveAnimation({ duration: 1000 })],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [CommonModule, RouterModule, LoadingScreenComponent, TuiRootModule],
 })
 export class AppComponent implements OnInit {
   public authService = inject(AuthService);
@@ -48,12 +43,15 @@ export class AppComponent implements OnInit {
             ),
             switchMap(() =>
               this.modal.info(
-                'A new version of the application is available, click ok to perform update. We are sorry for the inconvenience.'
+                '😍 A new version of the application is available, click ok to perform update. We are sorry for the inconvenience.',
+                undefined,
+                false
               )
             )
           )
           .subscribe((ok) => {
             window.location.reload();
+            this.cdr.detectChanges();
           });
       }
     });
@@ -63,10 +61,7 @@ export class AppComponent implements OnInit {
       this.authService.fetchUserData(),
       this.authService.initCultures(),
     ])
-      .pipe(
-        switchMap(() => this.authService.initRoles()),
-        switchMap(() => this.authService.initPortalsMenu())
-      )
+      .pipe(switchMap(() => this.authService.initPortalsMenu()))
       .subscribe({
         next: () => {
           this.authService.isAuthorized$.next(true);

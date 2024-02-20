@@ -11,9 +11,11 @@ import { Observable } from 'rxjs';
 export class Utils {
   public static SUPPORTED_DATA_TYPE = [
     DataType.Text,
+    DataType.String,
     DataType.MultilineText,
     DataType.Custom,
     DataType.Double,
+    DataType.DateTimeLocal,
     DataType.DateTime,
     DataType.Date,
     DataType.Url,

@@ -29,9 +29,9 @@ export class MasterDbStore extends BaseCRUDStore<MixDatabase> {
 
   public stateSignal = toSignal(
     combineLatest([this.request$$, this.uiStore.selectedContextId$]).pipe(
-      tap(([request, projectId]) => {
+      tap(([request, contextId]) => {
         request['mixDatabaseContextId'] =
-          projectId === DbContextFixId.MasterDb ? undefined : projectId;
+          contextId === DbContextFixId.MasterDb ? undefined : contextId;
 
         this.loadData(request);
       }),

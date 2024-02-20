@@ -1,33 +1,36 @@
 <div class="side-menu">
-  <div class="side-menu__header p-2">
+  <div class="side-menu__header"
+       [class]="{'justify-center': !showDetail}">
     <div class="side-menu__logo"
-         [ngClass]="{ '--active': showDetail }">
+         [class.!hidden]="!showDetail">
     </div>
 
-    <collapse-btn *ngIf="showDetail"
-                  class="side-menu__expand-btn"
-                  (click)="expandChange.emit()"></collapse-btn>
+    <div class="side-menu__logo-mini"
+         [class.!hidden]="showDetail">
+    </div>
+
   </div>
 
-  <div class="devider h-px bg-slate-300 w-full mt-1 mb-1"></div>
+  <div class="px-4 mb-2">
+    <hr class="border-dashed border-gray-300 dark:border-night-500">
+  </div>
 
   <div class="side-menu__body p-2 grow"
        [ngClass]="{ '--active': showDetail }">
-    @for(item of menu; track item) {
-    <tui-hosted-dropdown class="w-full"
-                         [class.mt-auto]="item.align === 'bottom'"
-                         [canOpen]="!showDetail"
-                         [content]="dropdown"
-                         [sided]="true"
-                         [tuiDropdownHideDelay]="50"
-                         [tuiDropdownShowDelay]="0"
-                         tuiDropdownHover
-                         tuiDropdownDirection="bottom">
+    @for(group of groupMenu; track group.group) {
+    <div class="pb-4 w-full">
+      <div class="px-3 w-full mb-1 flex items-center justify-between">
+        <small class="text-sm font-semibold text-gray-400 dark:text-night-200"
+               [ngClass]="{ hidden: !showDetail }">
+          {{ group.group | titlecase }}
+        </small>
+      </div>
+
+      @for(item of group.items; track item) {
       <div class="side-menu__item"
            [ngClass]="{
-          '--open': isMenuSelected(item, selectedMenu),
-          '--active': isMenuSelected(item, selectedMenu)
-        }"
+             '--open --active': isMenuSelected(item, selectedMenu)
+           }"
            (click)="onMenuSelect(item)">
         <div class="side-menu__parent-container">
           <span *ngIf="item.icon"
@@ -50,49 +53,78 @@
         </span>
 
         <div *ngIf="
-            showDetail &&
-            item.children?.length &&
-            isMenuSelected(item, selectedMenu)
-          "
+               showDetail &&
+               item.children?.length &&
+               isMenuSelected(item, selectedMenu)
+             "
              class="side-menu__child-container">
           <div *ngFor="let child of item.children"
                class="side-menu__child-item ripple-gray"
                [style.--icon-color]="child.iconColor"
-               [routerLink]="'/' + child.url"
-               (click)="$event.stopPropagation()">
+               (click)="$event.stopPropagation(); onMenuSelect(child, false)">
             <span class="mix-icon">{{
-              child.icon || 'fiber_manual_record'
-            }}</span>
+                 child.icon || 'fiber_manual_record'
+               }}</span>
             <span>
               {{ child.title }}
             </span>
           </div>
         </div>
       </div>
-
-      <ng-template #dropdown
-                   let-close="close">
-        <tui-data-list>
-          <tui-opt-group>
-            <button *ngFor="let item of item.children"
-                    class="menu"
-                    [routerLink]="'/' + item.url"
-                    [routerLinkActive]="'--active'"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    (click)="onMenuSelect(item)"
-                    style="justify-content: flex-start"
-                    tuiOption>
-              <span *ngIf="item.icon"
-                    class="mix-icon me-2">
-                {{ item.icon }}
-              </span>
-
-              {{ item.title | transloco }}
-            </button>
-          </tui-opt-group>
-        </tui-data-list>
-      </ng-template>
-    </tui-hosted-dropdown>
+      }
+    </div>
     }
+
+    <div class="px-3 mb-2 mt-auto w-full">
+      <hr class="border-dashed border-gray-300 dark:border-night-500">
+    </div>
+
+    <div class="mx-3 space-y-1 w-full">
+      <!-- Dark mode -->
+      <div class="side-menu__item"
+           (click)="showDevelopment()">
+        <div class="side-menu__parent-container">
+          <span class="mix-icon side-menu__icon"
+                [style.--icon-color]="'#9333ea'">
+            dark_mode
+          </span>
+
+          <span *ngIf="showDetail"
+                class="side-menu__item-title">
+            {{ 'Dark mode' | transloco }}
+          </span>
+        </div>
+      </div>
+
+
+      <!-- Sign out -->
+      <div class="side-menu__item"
+           (click)="logout()">
+        <div class="side-menu__parent-container">
+          <span class="mix-icon side-menu__icon">
+            logout
+          </span>
+
+          <span *ngIf="showDetail"
+                class="side-menu__item-title">
+            {{ 'Sign out' | transloco }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Version -->
+      <div class="side-menu__item">
+        <div class="side-menu__parent-container">
+          <span class="mix-icon side-menu__icon">
+            info
+          </span>
+
+          <span *ngIf="showDetail"
+                class="side-menu__item-title">
+            <span class="rounded-lg text-yellow-800 bg-yellow-100 px-4 font-semibold ">v1.0.0</span>
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

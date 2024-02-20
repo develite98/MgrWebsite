@@ -1,37 +1,19 @@
-<!-- <tui-combo-box *ngIf="control"
-               [formControl]="control"
-               [stringify]="stringify"
-               [tuiDropdownAlign]="'left'"
-               [tuiDropdownLimitWidth]="'auto'"
-               [tuiTextfieldLabelOutside]="true"
-               [tuiTextfieldSize]="size">
-  {{ placeHolder }}
-  <tui-data-list *tuiDataList>
-    <button *ngFor="let item of items"
-            [value]="item"
-            tuiOption>
-      <div class="flex items-center gap-2">
-        <span>{{ stringify(item) }}</span>
-      </div>
-    </button>
-  </tui-data-list>
-</tui-combo-box> -->
-
-<!-- <select class="outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        id="countries">
-</select> -->
-
 <button *ngIf="control"
-        class="block w-full bg-gray-50 p-2.5 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary focus:ring-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 relative"
+        class="block w-full bg-gray-50 px-2.5 pr-4 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary focus:ring-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 relative"
         type="button"
         aria-expanded="true"
         [tp]="selectTpl"
-        [tpOffset]="[0, 5]"
-        [tpUseHostWidth]="true"
+        [tpOffset]="[-10, -5]"
+        style="max-height: var(--element-height); min-height:  var(--element-height);"
         tpVariation="popper"
         tpPlacement="bottom-start">
   <span class="flex items-center">
+    @if (templateRef && control.value) {
+    <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: control.value}"></ng-container>
+    } @else {
     <span class="block truncate">{{ control.value ? stringify(control.value) : placeHolder }}</span>
+    }
+
   </span>
 
   <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -52,7 +34,11 @@
     @for (item of items; track item) {
     <div class="mix-menu-item flex justify-between gap-5"
          (click)="selectItem(item); hide()">
-      <div class="text-500">{{ stringify(item) }}</div>
+      @if (templateRef) {
+      <ng-container *ngTemplateOutlet="templateRef; context: {$implicit: item}"></ng-container>
+      } @else {
+      <div class="font-medium">{{ stringify(item) }}</div>
+      }
     </div>
     }
   </div>

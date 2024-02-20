@@ -8,4 +8,10 @@ export type MenuItem = {
   align?: 'top' | 'bottom';
   isDevelopment?: boolean;
   default?: boolean;
+  group?: string;
+};
+
+export type GroupMenuItem = {
+  group: string;
+  items: MenuItem[];
 };

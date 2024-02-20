@@ -2,23 +2,12 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms';
 import { BaseTextControl } from '@mixcore/ui/base-control';
-import {
-  TuiDataListModule,
-  TuiTextfieldControllerModule,
-} from '@taiga-ui/core';
-import { TuiSelectModule } from '@taiga-ui/kit';
+import { MixSelectComponent } from '@mixcore/ui/select';
 
 @Component({
   selector: 'story-point-select',
   standalone: true,
-  imports: [
-    CommonModule,
-    CommonModule,
-    TuiSelectModule,
-    TuiDataListModule,
-    TuiTextfieldControllerModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MixSelectComponent],
   templateUrl: './story-point-select.component.html',
   styleUrl: './story-point-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

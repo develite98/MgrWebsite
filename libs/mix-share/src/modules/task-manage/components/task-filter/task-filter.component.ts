@@ -42,7 +42,7 @@ export class TaskFilterComponent implements OnInit {
   public destroyRef = inject(DestroyRef);
   public userIds: string[] = [];
 
-  public readonly filterItems = ['Only My Issues', 'Ignore Resolved'];
+  public readonly filterItems = ['My Issues'];
   public readonly filterForm = new FormGroup({
     filters: new FormControl([]),
   });

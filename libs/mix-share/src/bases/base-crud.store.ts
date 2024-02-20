@@ -246,7 +246,7 @@ export class BaseCRUDStore<T> extends ComponentStore<BaseState<T>> {
         status: MixContentStatus.Published,
         searchMethod: 'Like',
         columns: '',
-        orderBy: 'createdDateTime',
+        orderBy: 'CreatedDateTime',
         metadataQueries: [],
       },
       data: DEFAULT_DATA.items,

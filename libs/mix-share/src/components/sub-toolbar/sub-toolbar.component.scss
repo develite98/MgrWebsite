@@ -14,16 +14,20 @@
   display: flex;
 
   &__title {
-    font-size: var(--text-size-xl);
+    @apply text-2xl;
     font-weight: 600;
-    margin-right: 16px;
+    margin-right: 0.875rem;
     white-space: nowrap;
+    line-height: 1;
   }
 
-  &__description {
-    font-size: var(--text-size-xs);
-    margin-right: 16px;
-    color: var(--text-03);
+  .description {
+    @apply text-xs;
+    margin-right: 1rem;
+  }
+
+  .main-title {
+    margin-top: -3px;
   }
 
   &__action {
@@ -35,7 +39,7 @@
 }
 
 .toolbar-separator {
-  height: 16px;
+  height: 1rem;
   margin: 0px 8px;
   content: '';
   display: block;

@@ -15,4 +15,5 @@ import { TuiAvatarModule } from '@taiga-ui/kit';
 export class UserAvatarComponent {
   @Input() public userInfo!: UserListVm;
   @Input() public size: 'xl' | 'l' | 's' | 'xs' = 'l';
+  @Input() public showName = false;
 }

@@ -1,6 +1,6 @@
 .task-filter {
   display: flex;
-  padding: 16px 16px 0px 16px;
+  // padding: 16px 16px 0px 16px;
   align-items: center;
 
   mix-input {
@@ -20,7 +20,7 @@
       }
 
       &:hover {
-        transform: translate(3px, -3px);
+        transform: translate(1px, -1px);
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
 

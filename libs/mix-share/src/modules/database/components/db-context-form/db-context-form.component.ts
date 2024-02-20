@@ -8,9 +8,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
+  DatabaseNamingConvention,
   DatabaseProvider,
   DatabaseProviderDisplay,
   MixDbContext,
+  NamingConventionDisplay,
 } from '@mixcore/lib/model';
 import { MixApiFacadeService } from '@mixcore/share/api';
 import { BaseComponent } from '@mixcore/share/base';
@@ -44,6 +46,10 @@ export class DbContextFormComponent extends BaseComponent {
   public toast = inject(HotToastService);
   public dialogRef = inject(DialogRef);
 
+  public namingConventions = Object.values(DatabaseNamingConvention);
+  public namingConventionLabel = (value: DatabaseNamingConvention) =>
+    NamingConventionDisplay[value];
+
   public dbProviders = Object.values(DatabaseProvider);
   public dbProviderLabel = (value: DatabaseProvider) =>
     DatabaseProviderDisplay[value];
@@ -54,6 +60,7 @@ export class DbContextFormComponent extends BaseComponent {
     databaseProvider: [DatabaseProvider.PostgreSQL],
     schema: [''],
     connectionString: ['', Validators.required],
+    namingConvention: [DatabaseNamingConvention.TitleCase, Validators.required],
   });
 
   public displayName$ = this.form.controls.displayName.valueChanges.pipe(

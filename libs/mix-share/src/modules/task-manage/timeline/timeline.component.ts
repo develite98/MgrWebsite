@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TaskTypeIcons } from '@mixcore/lib/model';
 import { BaseComponent } from '@mixcore/share/base';
@@ -19,6 +25,7 @@ import {
 } from '@worktile/gantt';
 import { setDefaultOptions } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+import { take } from 'rxjs';
 import { TaskDateDisplayComponent } from '../components/task-date-display/task-date-display.component';
 import { TaskManageStore } from '../store/task-ui.store';
 import { TaskStore } from '../store/task.store';
@@ -60,6 +67,7 @@ export class TimelineComponent extends BaseComponent {
   public dialog = inject(DialogService);
   public store = inject(TaskStore);
   public taskManage = inject(TaskManageStore);
+  public cdr = inject(ChangeDetectorRef);
 
   public viewType: GanttViewType = GanttViewType.day;
   public items: GanttItem[] = [];
@@ -79,28 +87,34 @@ export class TimelineComponent extends BaseComponent {
   constructor() {
     super();
 
-    this.store
-      .getParentTasks()
+    toObservable(this.store.state$$)
       .pipe(takeUntilDestroyed())
-      .subscribe((parent) => {
-        this.groups = parent.map((p) => ({
-          id: p.id.toString(),
-          title: p.title,
-        }));
-      });
+      .subscribe((v) => {
+        if (!v) return;
 
-    this.store.vm$.pipe(takeUntilDestroyed()).subscribe((v) => {
-      this.items = v.data
-        .filter((x) => x.parentTaskId)
-        .map((x) => ({
-          id: x.id.toString(),
-          title: x.title,
-          start: new Date(x.fromDate!).getTime(),
-          end: new Date(x.dueDate!).getTime(),
-          group_id: x.parentTaskId?.toString(),
-          ['task']: x,
-        }));
-    });
+        this.store
+          .getParentTasks()
+          .pipe(take(1))
+          .subscribe((parent) => {
+            this.groups = parent.map((p) => ({
+              id: p.id.toString(),
+              title: p.title,
+            }));
+
+            this.items = v.data
+              .filter((x) => x.parentTaskId)
+              .map((x) => ({
+                id: x.id.toString(),
+                title: x.title,
+                start: new Date(x.fromDate!).getTime(),
+                end: new Date(x.dueDate!).getTime(),
+                group_id: x.parentTaskId?.toString(),
+                ['task']: x,
+              }));
+
+            this.cdr.detectChanges();
+          });
+      });
 
     this.modeForm.controls.value.valueChanges
       .pipe(takeUntilDestroyed())

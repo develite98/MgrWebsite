@@ -40,5 +40,6 @@
         "cmd": "node ./tools/format-html-template.js --staged=true ${file}"
       }
     ]
-  }
+  },
+  "cSpell.words": ["Succesfully"]
 }

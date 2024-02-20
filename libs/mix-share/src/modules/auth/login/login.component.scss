@@ -22,7 +22,8 @@
   }
 
   &__des {
-    margin-bottom: 16px;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   &__title {
@@ -31,12 +32,12 @@
   }
 
   &__container {
-    width: 400px;
-    max-width: 98vw;
-    padding: 24px;
-    background-color: var(--background-color-primary);
-    border-radius: 12px;
     border: 1px solid var(--border-color-default);
-    padding-bottom: 32px;
+    background-color: var(--background-color-primary);
+    width: 25rem;
+    max-width: 98vw;
+    padding: 1.5rem;
+    border-radius: 12px;
+    padding-bottom: 2rem;
   }
 }

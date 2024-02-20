@@ -4,10 +4,11 @@
   --task-list-bg: rgba(244, 244, 244, 1);
   --task-col-padding: 8px 16px;
   --task-col-collapse-w: 50px;
+  --board-width: 1340px;
 
   &__main-view {
-    max-width: calc(100% - 28px);
-    width: fit-content;
+    max-width: calc(100% - 14px);
+    width: calc(100% - 14px);
     height: 100%;
     margin: 14px;
     display: flex;
@@ -16,11 +17,19 @@
   }
 
   &__filter {
-    padding: 16px 16px 0px 16px;
+    padding: 1rem 1rem 0px 1rem;
     display: flex;
 
     mix-input {
       width: 300px;
     }
   }
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+mix-task-group-list {
+  display: block;
 }

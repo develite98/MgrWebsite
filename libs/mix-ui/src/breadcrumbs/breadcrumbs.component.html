@@ -1,11 +1,12 @@
-<nav class="flex"
+<nav class="flex mix-breadcrumbs"
      aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
     @for (item of displayItems(); track item; let idx = $index, last = $last) {
     <li class="items-center"
-        [ngClass]="{'hidden lg:inline-flex': !last, 'inline-flex': last}">
+        [ngClass]="{'hidden lg:inline-flex': !last, 'inline-flex': last}"
+        (click)="itemClick.emit({data: item, index: idx, last: last})">
       <svg *ngIf="idx > 0"
-           class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+           class="rtl:rotate-180 w-3 h-3 text-gray-400 mr-2"
            xmlns="http://www.w3.org/2000/svg"
            fill="none"
            viewBox="0 0 6 10">
@@ -16,10 +17,12 @@
               d="m1 9 4-4-4-4"></path>
       </svg>
 
-      <a class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
-         [routerLink]="item.url">
-        <svg *ngIf="idx === 0"
-             class="w-3 h-3 me-2.5"
+      <a class="inline-flex items-center font-medium text-gray-700 dark:text-gray-400 "
+         [class.cursor-pointer]="!last"
+         [class.hover:text-blue-600]="!last"
+         [class.dark:hover:text-white]="!last">
+        <svg *ngIf="idx === 0 && showHome"
+             class="w-3 h-3 me-3"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
@@ -35,7 +38,6 @@
         <ng-container *ngIf="!item.templateRef">
           <div>{{ item.name}}</div>
         </ng-container>
-
       </a>
     </li>
     }

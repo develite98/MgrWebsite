@@ -1,15 +1,6 @@
-<tui-select [formControl]="control"
-            [tuiTextfieldLabelOutside]="true"
-            [tuiTextfieldSize]="size"
-            [valueContent]="cardContent">
-  <tui-data-list *tuiDataList>
-    <button *ngFor="let item of storyPointItems"
-            [value]="item"
-            tuiOption>
-      <ng-container *ngTemplateOutlet="cardContent; context: { $implicit: item }"></ng-container>
-    </button>
-  </tui-data-list>
-</tui-select>
+<mix-select [formControl]="control"
+            [items]="storyPointItems"
+            [templateRef]="cardContent"></mix-select>
 
 <ng-template #cardContent
              let-item>

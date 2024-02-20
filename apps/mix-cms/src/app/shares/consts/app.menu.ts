@@ -1,78 +1,36 @@
 import { MenuItem } from '@mixcore/lib/model';
+import { TASK_ROUTES } from '@mixcore/module/task';
 import { CMS_ROUTES } from '../../app.routes';
 
-export const APP_MENU = <MenuItem[]>[
+export const APP_MENU: MenuItem[] = [
   {
+    group: 'base',
     title: 'Dashboard',
     url: CMS_ROUTES.portal.dashboard.fullPath,
     icon: 'dashboard',
-    iconColor: '#00ACC1',
     children: [
       {
         icon: 'analytics',
         title: 'Statistic',
         url: CMS_ROUTES.portal.dashboard.fullPath,
       },
-      {
-        icon: 'breaking_news_alt_1',
-        title: 'News',
-        url: CMS_ROUTES.portal.news.fullPath,
-      },
     ],
   },
   {
-    title: 'Posts',
-    url: CMS_ROUTES.portal.post.fullPath,
-    icon: 'post_add',
+    group: 'base',
+    title: 'Database',
+    url: '',
     iconColor: '#EC652C',
-    children: [
-      {
-        icon: 'format_list_numbered',
-        title: 'List',
-        url: CMS_ROUTES.portal.post.fullPath,
-      },
-    ],
-  },
-  {
-    title: 'Pages',
-    url: CMS_ROUTES.portal.page.fullPath,
-    icon: 'lab_profile',
-    iconColor: '#2190E4',
-    children: [
-      {
-        icon: 'format_list_numbered',
-        title: 'List',
-        url: CMS_ROUTES.portal.page.fullPath,
-      },
-    ],
-  },
-  {
-    title: 'Modules',
-    url: CMS_ROUTES.portal.module.fullPath,
-    icon: 'view_module',
-    iconColor: '#63D8FF',
-    children: [
-      {
-        icon: 'format_list_numbered',
-        title: 'List',
-        url: CMS_ROUTES.portal.module.fullPath,
-      },
-    ],
-  },
-  {
-    title: 'Mix Dbs',
-    url: CMS_ROUTES.portal.database.fullPath,
     icon: 'database',
-    iconColor: '#BB56CF',
     children: [
       {
-        icon: 'content_copy',
-        title: 'Context(s)',
-        iconColor: '#BB56CF',
+        icon: 'format_list_numbered',
+        title: 'Context',
         url: CMS_ROUTES.portal.databaseContext.fullPath,
+        iconColor: '#BB56CF',
       },
       {
-        icon: 'format_list_numbered',
+        icon: 'settings',
         title: 'Database Config',
         iconColor: '#2190E4',
         url: CMS_ROUTES.portal.database.fullPath,
@@ -87,67 +45,64 @@ export const APP_MENU = <MenuItem[]>[
         icon: 'database',
         title: 'Visualize Diagram',
         iconColor: '#EC652C',
-        url: CMS_ROUTES.portal.databaseQuery.fullPath,
+        url: CMS_ROUTES.portal.database.fullPath,
+        isDevelopment: true,
       },
       {
         icon: 'description',
         title: 'API Document',
-        url: CMS_ROUTES.portal['database-doc'].fullPath,
+        url: CMS_ROUTES.portal.dashboard.fullPath,
+        isDevelopment: true,
       },
     ],
   },
   {
-    title: 'User',
-    url: CMS_ROUTES.portal.user.fullPath,
-    icon: 'manage_accounts',
+    group: 'base',
+    title: 'Users',
+    url: '',
+    iconColor: '#2563eb',
+    icon: 'group',
     children: [
       {
-        title: 'All',
-        url: CMS_ROUTES.portal.user.fullPath,
-        icon: 'manage_accounts',
+        icon: 'sort',
+        title: 'All Users',
+        url: CMS_ROUTES.portal.users.fullPath,
       },
       {
+        icon: 'verified_user',
         title: 'Roles',
+        iconColor: '#2190E4',
         url: CMS_ROUTES.portal.roles.fullPath,
-        icon: 'security',
-      },
-      {
-        title: 'Permissions',
-        url: CMS_ROUTES.portal.permission.fullPath,
-        icon: 'folder_managed',
       },
     ],
   },
   {
-    title: 'Project',
-    icon: 'view_kanban',
-    iconColor: '#2190E4',
+    group: 'base',
+    title: 'Events',
+    url: CMS_ROUTES.portal.events.fullPath,
+    iconColor: '#f59e0b',
+    icon: 'schedule_send',
     children: [
       {
-        title: 'Project Setting',
-        url: CMS_ROUTES.portal.project.fullPath,
-        icon: 'settings',
-        align: 'bottom',
-      },
-      {
-        title: 'Backlogs',
-        iconColor: '#BB56CF',
-        url: CMS_ROUTES.portal.board.fullPath,
-        icon: 'view_kanban',
-      },
-      {
-        title: 'Board',
-        iconColor: '#BB56CF',
-        url: CMS_ROUTES.portal.board.fullPath,
-        icon: 'view_kanban',
-      },
-      {
-        title: 'Timeline',
-        iconColor: '#3EAF12',
-        url: CMS_ROUTES.portal.timeline.fullPath,
-        icon: 'timeline',
+        icon: 'sort',
+        title: 'Schedulers',
+        url: CMS_ROUTES.portal.schedulers.fullPath,
       },
     ],
+  },
+  {
+    group: 'workspace',
+    title: 'Kanban Board',
+    url: CMS_ROUTES.portal.work.fullPath,
+    iconColor: '#8F49DE',
+    icon: 'view_kanban',
+  },
+  {
+    group: 'workspace',
+    title: 'Timeline',
+    iconColor: '#E86427',
+    url: `${CMS_ROUTES.portal.work.fullPath}/${TASK_ROUTES.timeline}`,
+    icon: 'schedule',
   },
 ];
 
@@ -166,23 +121,6 @@ export const APP_NOT_SUPPER_ADMIN_MENU = [
         icon: 'breaking_news_alt_1',
         title: 'News',
         url: CMS_ROUTES.portal.news.fullPath,
-      },
-    ],
-  },
-  {
-    title: 'Posts',
-    url: CMS_ROUTES.portal.post.fullPath,
-    icon: 'post_add',
-    children: [
-      {
-        icon: 'format_list_numbered',
-        title: 'List',
-        url: CMS_ROUTES.portal.post.fullPath,
-      },
-      {
-        icon: 'add_circle',
-        title: 'Create',
-        url: CMS_ROUTES.portal.post.fullPath,
       },
     ],
   },

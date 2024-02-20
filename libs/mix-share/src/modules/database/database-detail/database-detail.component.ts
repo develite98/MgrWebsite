@@ -45,6 +45,7 @@ import { DatabasePermissionComponent } from '../components/database-permission/d
 import { DatabaseRelationshipComponent } from '../components/database-relationship/database-relationship.component';
 import { DatabaseSelectComponent } from '../components/database-select/database-select.component';
 import { DbContextSelectComponent } from '../components/db-context-select/db-context-select.component';
+import { DbUiStore } from '../store/db-ui.store';
 
 @Component({
   selector: 'mix-database-detail',
@@ -83,6 +84,7 @@ export class DatabaseDetailComponent extends DetailPageKit implements OnInit {
   public modal = inject(ModalService);
   public zone = inject(NgZone);
   public dialog = inject(DialogService);
+  public uiStore = inject(DbUiStore);
 
   public data: MixDatabase | undefined = undefined;
   public form = new FormGroup({
@@ -130,6 +132,10 @@ export class DatabaseDetailComponent extends DetailPageKit implements OnInit {
           .pipe(takeUntil(this.destroy$), this.observerLoadingState())
           .subscribe((v) => {
             this.data = new MixDatabase(v);
+            this.uiStore.changeContextId(
+              v.mixDatabaseContextId ?? DbContextFixId.MasterDb
+            );
+
             this.form.patchValue(this.data, { emitEvent: false });
             this.cdr.detectChanges();
           });
@@ -186,6 +192,10 @@ export class DatabaseDetailComponent extends DetailPageKit implements OnInit {
   public selectedTableChange(ev: MixDatabase) {
     if (ev.id == this.id) return;
     this.router.navigate([...this.baseSegment, ev.id]);
+  }
+
+  public onCreateTable() {
+    this.router.navigate([...this.baseSegment, 'create']);
   }
 
   public onColumnsChange(columns: MixColumn[]) {

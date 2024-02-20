@@ -6,7 +6,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   effect,
@@ -38,9 +37,6 @@ import { MixInputComponent } from '@mixcore/ui/input';
 import { MixInputNumberComponent } from '@mixcore/ui/input-number';
 import { SkeletonLoadingComponent } from '@mixcore/ui/skeleton';
 import { EditModeDirective, EditableComponent } from '@ngneat/edit-in-place';
-import { TuiSidebarModule } from '@taiga-ui/addon-mobile';
-import { TuiActiveZoneModule } from '@taiga-ui/cdk';
-import { TuiDataListModule, TuiHostedDropdownModule } from '@taiga-ui/core';
 import { CompressImageComponent } from '../compress-image/compress-image.component';
 import { DynamicDataDisplayComponent } from '../dynamic-data-display/dynamic-data-display.component';
 
@@ -54,8 +50,6 @@ import { DynamicDataDisplayComponent } from '../dynamic-data-display/dynamic-dat
     RelativeTimeSpanPipe,
     FormlyModule,
     ReactiveFormsModule,
-    TuiSidebarModule,
-    TuiActiveZoneModule,
     SkeletonLoadingComponent,
     CompressImageComponent,
     DynamicDataDisplayComponent,
@@ -64,17 +58,12 @@ import { DynamicDataDisplayComponent } from '../dynamic-data-display/dynamic-dat
     EditModeDirective,
     MixInputComponent,
     MixInputNumberComponent,
-    TuiHostedDropdownModule,
-    TuiDataListModule,
   ],
   templateUrl: './dynamic-db-list.component.html',
   styleUrls: ['./dynamic-db-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynamicDbListComponent
-  extends BaseComponent
-  implements OnInit, OnChanges
-{
+export class DynamicDbListComponent extends BaseComponent implements OnChanges {
   @Input({ required: true }) dbSysName!: string;
   @Input() type: 'inline' | 'output' = 'inline';
   @Input() editContainerClass = '';
@@ -92,7 +81,10 @@ export class DynamicDbListComponent
   };
 
   @Output() savedSuccess: EventEmitter<void> = new EventEmitter();
-  @Output() editDataChange: EventEmitter<MixDynamicData> = new EventEmitter();
+  @Output() editDataChange: EventEmitter<{
+    data: MixDynamicData;
+    db: MixDatabase;
+  }> = new EventEmitter();
   @Output() public itemsSelectedChange: EventEmitter<MixDynamicData[]> =
     new EventEmitter();
 
@@ -104,15 +96,14 @@ export class DynamicDbListComponent
   public showSidebar = signal(false);
   public cdr = inject(ChangeDetectorRef);
 
-  // Query
   public query = signal(<PaginationRequestModel>{
     direction: 'Desc',
     pageIndex: 0,
-    pageSize: 30,
+    pageSize: 10,
   });
   public pageInfo = signal(<PaginationModel>{
     pageIndex: 0,
-    pageSize: 30,
+    pageSize: 10,
   });
 
   public data = signal(<MixDynamicData[]>[]);
@@ -121,8 +112,6 @@ export class DynamicDbListComponent
   public searchFieldOptions: string[] = [];
   public searchFieldOptionsDict: { [key: string]: string } = {};
   public selectedData = signal<MixDynamicData | undefined>(undefined);
-
-  // Edit variant require item
   public model: MixDynamicData = {};
   public fields: FormlyFieldConfig[] = [];
   public forms: FormGroup | undefined = undefined;
@@ -131,14 +120,14 @@ export class DynamicDbListComponent
     {
       label: 'Edit',
       action: (item: MixDynamicData) => {
-        this.editData(item);
+        this.editDataChange.emit({ data: item, db: this.db()! });
       },
       icon: 'edit',
     },
     {
-      label: 'Delete',
+      label: 'Unlink data',
       action: (item: MixDynamicData) => {
-        this.deleteDbData(item);
+        this.unLinkDbData(item);
       },
       icon: 'delete',
     },
@@ -184,14 +173,15 @@ export class DynamicDbListComponent
     }
   }
 
-  public ngOnInit() {
-    this.loadData(this.query());
-  }
-
   public loadData(request: PaginationRequestModel, silentLoad = false) {
     if (!this.dbSysName) return;
-
     const query = request;
+    query['name'] = this.dbSysName;
+    query['relationship'] = 'OneToMany';
+    (query.searchColumns = ''), (query.searchMethod = 'Like');
+    query.orderBy = 'CreatedDateTime';
+    query.direction = 'Desc';
+
     if (this.parentId !== undefined) {
       query.parentId = this.parentId;
     }
@@ -207,7 +197,8 @@ export class DynamicDbListComponent
     forkJoin([
       this.mixApi.databaseApi.getDataByName<MixDynamicData>(
         this.dbSysName,
-        query
+        query,
+        true
       ),
       this.mixApi.databaseApi.getDatabaseBySystemName(this.dbSysName),
     ])
@@ -224,7 +215,7 @@ export class DynamicDbListComponent
             this.searchFieldOptionsDict[x.displayName] = x.systemName;
           });
 
-          this.data.set(result.items);
+          this.data.set(result.items.map((x) => x as MixDynamicData));
           this.pageInfo.set(result.pagingData);
           this.db.set(db);
 
@@ -247,33 +238,6 @@ export class DynamicDbListComponent
     }));
   }
 
-  public editData(data: MixDynamicData) {
-    const db = this.db();
-    if (!db) return;
-
-    if (this.type === 'output') {
-      this.editDataChange.emit(data);
-      return;
-    }
-
-    this.showSidebar.set(true);
-
-    setTimeout(() => {
-      this.forms = new FormGroup({});
-      this.selectedData.set(data);
-      const { model, fields } = Utils.BuildDynamicFormField(
-        db.columns,
-        data,
-        this.uploadFileFn,
-        this.deleteFileFn
-      );
-
-      this.model = model;
-      this.fields = fields;
-      this.cdr.detectChanges();
-    }, 50);
-  }
-
   public onBack(silentLoad = false): void {
     this.onReload(silentLoad);
     this.selectedData.set(undefined);
@@ -286,46 +250,6 @@ export class DynamicDbListComponent
 
   public onReload(silentLoad = false): void {
     this.loadData(this.query(), silentLoad);
-  }
-
-  public saveData(): void {
-    const db = this.db();
-    if (!db) return;
-    if (!this.model.id) return;
-    if (!this.forms) return;
-
-    this.savingVariant.set(true);
-    this.mixApi.databaseApi
-      .saveData(db.systemName, this.model.id, {
-        ...this.model,
-        ...this.forms.getRawValue(),
-      })
-      .pipe(
-        this.toast.observe({
-          loading: 'Processing',
-          success: `Successfully save your ${db.displayName}`,
-          error: 'Something error, please try gain',
-        })
-      )
-      .subscribe({
-        next: (result) => {
-          const currentData = this.data();
-          const index = currentData.findIndex((d) => d.id === result?.id);
-          if (index !== undefined) {
-            currentData[index] = result;
-            this.data.set(currentData);
-          }
-
-          this.savedSuccess.emit();
-          this.onBack();
-        },
-        complete: () => {
-          this.savingVariant.set(false);
-        },
-        error: () => {
-          this.savingVariant.set(false);
-        },
-      });
   }
 
   public onPageChange(index: number): void {

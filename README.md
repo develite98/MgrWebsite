@@ -1,28 +1,30 @@
-# mix.portal.angular
+# 4PS Portal Back Office Monorepo
 
+## Information
 
-## Build & Run
+We used PNPM to manage monorepo, this concept called Packaged-base Monorepo, similar with Learna, Turborepo
+
+## Environment
+
+##### Node: >=18.17.0
+
+##### PNPM: >=8.9.0
+
+Prefer use NVM to manage node version(s)
+
+## Development
+
+At the root of workspace
 
 ```bash
-yarn start
-yarn build
+pnpm install
 ```
 
-## License
+```bash
+pnpm start
+```
 
-Mixcore CMS is licensed under the **[MIT](https://github.com/mixcore/mix.core/blob/master/LICENSE)**
-
-| Permissions      | Limitations | Conditions                     |
-| ---------------- | ----------- | ------------------------------ |
-| ✔ Commercial use | ✖ Liability | ℹ License and copyright notice |
-| ✔ Modification   | ✖ Warranty  |                                |
-| ✔ Distribution   |             |                                |
-| ✔ Private use    |             |                                |
-|                  |             |                                |
-
-## Activity
-
-# ![Alt](https://repobeats.axiom.co/api/embed/d596dd234f1e2068ad8c1fa0a608ac4561789750.svg 'Repobeats analytics image')
+_Check out the root package.json for a short script_
 
 ## How to contribute
 

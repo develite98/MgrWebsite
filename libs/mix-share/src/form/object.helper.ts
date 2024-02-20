@@ -1,12 +1,7 @@
 import { clone, difference, groupBy } from 'remeda';
 
 export type RecordableKeys<T> = {
-  // for each key in T
-  [K in keyof T]: T[K] extends string | number | symbol // is the value a valid object key?
-    ? // Yes, return the key itself
-      K
-    : // No. Return `never`
-      never;
+  [K in keyof T]: T[K] extends string | number | symbol ? K : never;
 }[keyof T];
 
 export class ArrayUtil {
@@ -38,6 +33,19 @@ export class ArrayUtil {
 export class ObjectUtil {
   public static clone<T>(object: T) {
     return clone(object);
+  }
+
+  public static clean(obj: any) {
+    for (const propName in obj) {
+      if (
+        obj[propName] === null ||
+        obj[propName] === undefined ||
+        obj[propName] == ''
+      ) {
+        delete obj[propName];
+      }
+    }
+    return obj;
   }
 
   public static diff(object: object, toCompareObj: object) {

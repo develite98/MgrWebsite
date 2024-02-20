@@ -1,0 +1,27 @@
+.tree-node {
+  display: block;
+  @apply text-sm p-2 gap-2 cursor-pointer;
+
+  &__toggle-btn {
+    @apply flex items-center justify-center;
+  }
+
+  &__invisible {
+    display: none;
+  }
+
+  ul,
+  li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+}
+
+.tiptap {
+  outline: none;
+}
+
+.tree-node .tree-node {
+  padding-left: 20px;
+}

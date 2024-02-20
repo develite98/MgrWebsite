@@ -1,23 +1,39 @@
-<div class="w-full task-parent-card text-m"
+<div class="task-parent-card text-m"
      [class.--open]="open">
-  <mix-button [size]="'xs'"
-              [type]="'icon'"
-              (click)="expandClick.emit()"><span class="mix-icon expand-icon text-xxl">expand_more</span>
-  </mix-button>
+  <button class="p-1 w-10 h-10"
+          (click)="expandClick.emit()">
+    <span class="mix-icon expand-icon text-xl">expand_more</span>
+  </button>
 
-  <mix-user-avatar *ngIf="userInfo() as info"
-                   [userInfo]="info"
-                   size="xs"></mix-user-avatar>
-
-  <span class="task-parent-card__title"
+  <span class="task-parent-card__title mr-2"
         (click)="editTask()">
-    {{ task.title }}
+    <div *ngIf="userInfo() as info"
+         class="inline-flex mr-1">
+      <mix-user-avatar [showName]="false"
+                       [userInfo]="info"
+                       size="xs"></mix-user-avatar>
+    </div>
+
+
+    <span class="text-uppercase">
+      {{ task.id }} -
+    </span>
+
+    <span class="font-medium">
+      {{ task.title }}
+    </span>
   </span>
 
-  <mix-button class="ms-2"
-              [iconBtn]="true"
-              [size]="'xs'"
-              (click)="addTask()">
-    <span class="mix-icon text-xxl">add</span>
-  </mix-button>
+  <div class="task-parent-card__due-date">
+    <task-date-display [task]="task"></task-date-display>
+  </div>
+
+
+  <div class="task-parent-card__progress w-full bg-gray-300 h-5 overflow-hidden px-3 py-1 rounded-2xl text-white font-medium relative">
+    <div class="bg-green-400 rounded text-center text-white text-sm transition-all absolute h-full top-0 left-0"
+         [style.width]="percentage() + '%'">
+    </div>
+
+    <span class="absolute top-1/2 left-3 -translate-y-1/2"> {{taskStatistic?.done || 0}}/{{taskStatistic?.total}} items done</span>
+  </div>
 </div>

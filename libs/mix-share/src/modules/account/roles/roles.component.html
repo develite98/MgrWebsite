@@ -39,7 +39,12 @@
         <div [header]="'Role'"
              [minWidth]="'150px'"
              key="name"
-             mixTableColumn></div>
+             mixTableColumn>
+          <ng-template let-data
+                       mixColumnCell>
+            <span class="font-medium"> {{ data.name }}</span>
+          </ng-template>
+        </div>
 
         <div *ngIf="!showDetail"
              [header]="'Normalized'"

@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
 import { TaskManageLayoutComponent } from './task-manage.layout';
+export const TASK_ROUTES = {
+  timeline: 'timeline',
+  board: 'board',
+  project: 'project',
+};
 
 export const taskManagementRoutes: Routes = [
   {
@@ -7,17 +12,17 @@ export const taskManagementRoutes: Routes = [
     component: TaskManageLayoutComponent,
     children: [
       {
-        path: 'board',
+        path: TASK_ROUTES.board,
         loadComponent: () =>
           import('./board/board.component').then((c) => c.TaskBoardComponent),
       },
       {
-        path: 'project',
+        path: TASK_ROUTES.project,
         loadComponent: () =>
           import('./project/project.component').then((c) => c.ProjectComponent),
       },
       {
-        path: 'timeline',
+        path: TASK_ROUTES.timeline,
         loadComponent: () =>
           import('./timeline/timeline.component').then(
             (c) => c.TimelineComponent
@@ -25,7 +30,7 @@ export const taskManagementRoutes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'board',
+        redirectTo: TASK_ROUTES.board,
         pathMatch: 'full',
       },
     ],

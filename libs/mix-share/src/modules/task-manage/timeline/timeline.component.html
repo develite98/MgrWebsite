@@ -2,9 +2,7 @@
      class="data-table-page board">
   <div class="data-table-page__main-container">
     <mix-sub-toolbar [description]="'View'"
-                     [title]="'Timeline'">
-      <mix-button size="s"><span class="material-symbols-outlined"> add </span>
-        {{ 'New' | transloco }}</mix-button>
+                     [title]="'Timetable'">
     </mix-sub-toolbar>
 
     <div class="timeline__toolbar">
@@ -36,21 +34,35 @@
                  [viewType]="viewType">
         <ngx-gantt-table>
           <ngx-gantt-column name="Title"
-                            width="200px">
-            <ng-template #cell
-                         let-item="item"> {{ item.title }} </ng-template>
-          </ngx-gantt-column>
-
-          <ngx-gantt-column name="Info"
-                            width="300px">
+                            width="400px">
             <ng-template #cell
                          let-item="item">
-              <div class="h-full flex gap-1 items-center">
+              <div class="h-full flex gap-2 items-center">
                 <img alt="type"
                      [src]="TaskTypeIcon[item.task.type]">
 
-                <task-date-display [task]="item.task"></task-date-display>
+                {{ item.title }}
               </div>
+
+            </ng-template>
+          </ngx-gantt-column>
+
+          <ngx-gantt-column name="Due date"
+                            width="240px">
+            <ng-template #cell
+                         let-item="item">
+              <div class="h-full flex gap-2 items-center">
+                <task-date-display [showFull]="true"
+                                   [task]="item.task"></task-date-display>
+              </div>
+            </ng-template>
+          </ngx-gantt-column>
+
+          <ngx-gantt-column name="Status"
+                            width="300px">
+            <ng-template #cell
+                         let-item="item">
+              {{ item.task.taskStatus}}
             </ng-template>
           </ngx-gantt-column>
         </ngx-gantt-table>

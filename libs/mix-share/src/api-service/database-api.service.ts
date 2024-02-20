@@ -99,10 +99,18 @@ export class MixDatabaseApi extends MixRestfulApi<MixDatabase> {
 
   public getDataByName<T>(
     dbName: string,
-    query: PaginationRequestModel
+    query: PaginationRequestModel,
+    nestedData = false
   ): Observable<PaginationResultModel<T>> {
+    let request = '';
+    if (nestedData) {
+      request = `${MixSwagger.content.mixDb}/${dbName}/nested-data/filter`;
+    } else {
+      request = `${MixSwagger.content.mixDb}/${dbName}/filter`;
+    }
+
     return this.post<PaginationRequestModel, PaginationResultModel<T>>(
-      `${MixSwagger.content.mixDb}/${dbName}/filter`,
+      request,
       query as IHttpParamObject
     ).pipe(
       map((result) => ({

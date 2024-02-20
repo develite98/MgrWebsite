@@ -1,0 +1,83 @@
+<div class="border pb-2 bg-white border-gray-200 rounded-lg shadow-lg overflow-hidden">
+  <div class="flex p-3 justify-between items-center border-b border-gray-300">
+    <span class="font-semibold">Categories</span>
+    <mix-button type="secondary"
+                (click)="adding.set(true)"
+                size="xs">+ Add</mix-button>
+  </div>
+
+  @if (adding()) {
+  <input #addInput
+         class="!outline-none w-full px-3 py-4 border-b border-dashed border-gray-300"
+         [formControl]="addForm"
+         (focusout)="adding.set(false)"
+         placeholder="Type & press enter"
+         (keyup.esc)="adding.set(false)"
+         (keyup.enter)="addNewCat()">
+  {{ addInput.focus() }}
+  }
+
+  <div *ngIf="categories() as categories"
+       class="cdk-drag-animate"
+       [cdkDropListData]="categories"
+       (cdkDropListDropped)="drop($event)"
+       cdkDropList>
+    @for (item of categories; track item.id; let last = $last, index = $index) {
+    <div class="w-full bg-white cdk-drag-item"
+         [cdkDragData]="item"
+         cdkDrag>
+      <div class="px-3 py-4 gap-2 flex items-center border-b border-dashed border-gray-300">
+        <span class="mix-icon text-gray-400"
+              cdkDragHandle>drag_indicator</span>
+        <span>{{ item.title }}</span>
+        <button class="!outline-none ml-auto p-1  w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded">
+          <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+        </button>
+        <button class="!outline-none p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded"
+                [tp]="moreAction"
+                [tpOffset]="[-10, -5]"
+                tpVariation="popper"
+                tpPlacement="bottom-end">
+          <span class="mix-icon">more_vert</span>
+        </button>
+      </div>
+
+      @if (item.subCategories.length) {
+      @for (sub of item.subCategories; track sub.id; let end = $last) {
+      <div class="px-3 py-4 pl-8 gap-2 flex items-center border-b border-dashed border-gray-300">
+        <span class="mix-icon text-gray-400">drag_indicator</span>
+        <span>{{ sub.title }}</span>
+        <button class="!outline-none ml-auto  p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded">
+          <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+        </button>
+        <button class="!outline-none p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded"
+                [tp]="moreAction"
+                [tpOffset]="[-10, -5]"
+                tpVariation="popper"
+                tpPlacement="bottom-end">
+          <i class="mix-icon leading-0">more_vert</i>
+        </button>
+      </div>
+      }
+      }
+    </div>
+    }
+  </div>
+</div>
+
+<ng-template #moreAction
+             let-hide>
+  <div class="mix-menu-item flex justify-content-between gap-3">
+    <i class="mix-icon">edit</i>
+    <span>
+      Edit
+    </span>
+  </div>
+
+  <div class="mix-menu-item flex justify-content-between gap-3 text-red-600">
+    <i class="mix-icon text-red-600">delete</i>
+    <span>
+      Remove
+    </span>
+  </div>
+</ng-template>
